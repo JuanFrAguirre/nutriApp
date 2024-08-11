@@ -3,9 +3,18 @@ import { DishProduct } from '@/interfaces/interfaces';
 import { useCalculatorStore } from '@/store/calculator-store';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { CgSpinner } from 'react-icons/cg';
-import { IoCheckmarkOutline } from 'react-icons/io5';
+import { HiPencilSquare } from 'react-icons/hi2';
+import { IoAddOutline, IoCheckmarkOutline } from 'react-icons/io5';
+import { LiaTrashAlt } from 'react-icons/lia';
 
 interface Props {
   product: DishProduct;
@@ -28,6 +37,7 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
   const [unitType, setUnitType] = useState(calcProduct.unitType || 'relative');
   const [portionWeight, setPortionWeight] = useState(product.presentationSize);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const updatedProduct = products.find((p) => p.id === product.id);
@@ -45,23 +55,30 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
     [product, products],
   );
 
+  const navigateToEditProduct = (e: any) => {
+    e.stopPropagation();
+    router.push(`/products/${product.id}`);
+  };
+
   useEffect(() => {
     setLoading(false);
   }, []);
 
   if (loading)
     return (
-      <p>
-        <CgSpinner className="animate-spin" />
-      </p>
+      <div className="w-full grow flex justify-center items-center min-h-[227px] bg-white border animate-pulse rounded">
+        <CgSpinner className="animate-spin text-primary" size={40} />
+      </div>
     );
 
   return (
-    <button
+    <div
       key={calcProduct.id}
       className={clsx(
-        'p-3 border rounded shadow-md flex flex-col gap-2 bg-white/75 relative',
-        isProductInCalculator && !isOnCalculatorPage && 'border-primary',
+        'p-3 border rounded-xl flex flex-col gap-2 bg-white relative transition-all',
+        isProductInCalculator && !isOnCalculatorPage
+          ? 'border-primary !bg-green-50'
+          : 'border-stone-50',
         isOnCalculatorPage && 'cursor-default',
       )}
       onClick={
@@ -72,19 +89,56 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
           : () => {}
       }
     >
-      {isProductInCalculator && !isOnCalculatorPage && (
-        <div className="absolute -top-3 -right-3 rounded-full overflow-hidden">
-          <IoCheckmarkOutline size={35} className="text-white bg-primary p-1" />
-        </div>
+      {/* Buttons for adding to/removing from calculator and editing product */}
+      {!isOnCalculatorPage && (
+        <>
+          <button className="absolute -top-3 -right-3 rounded-full overflow-hidden">
+            {isProductInCalculator ? (
+              <IoCheckmarkOutline
+                size={30}
+                className="text-white bg-primary hover:bg-secondary p-1 transition-all shadow"
+              />
+            ) : (
+              <IoAddOutline
+                size={30}
+                className="text-white bg-primary hover:bg-secondary p-1 transition-all shadow"
+              />
+            )}
+          </button>
+
+          <button
+            className="absolute top-6 -right-3 rounded-full overflow-hidden"
+            onClick={navigateToEditProduct}
+          >
+            <HiPencilSquare
+              size={30}
+              className="text-white bg-brandOrange hover:bg-orange-500 p-1.5 transition-all shadow"
+            />
+          </button>
+        </>
       )}
-      <p className="grow text-secondary text-center">{product.title}</p>
+
+      {/* Delete product from calculator on calculator page */}
+      {isOnCalculatorPage && (
+        <button
+          className="absolute -top-2 -right-3 rounded-full overflow-hidden"
+          onClick={() => removeProductFromCalculator(product)}
+        >
+          <LiaTrashAlt
+            size={35}
+            className="text-white bg-red-500 hover:bg-red-700 p-1 transition-all shadow"
+          />
+        </button>
+      )}
+      <p className="grow text-secondary text-left">{product.title}</p>
       <Image
         src={calcProduct.image || ''}
         alt={calcProduct.title}
         width={500}
         height={500}
-        className="w-30 h-30 rounded border-stone-200 border shadow-sm"
+        className="w-30 h-30 rounded-xl border-stone-50 border"
       />
+
       {isOnCalculatorPage ? (
         <>
           <div className="flex gap-2">
@@ -263,6 +317,6 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
           </div>
         </>
       ) : null}
-    </button>
+    </div>
   );
 };

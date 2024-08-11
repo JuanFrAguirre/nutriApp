@@ -6,7 +6,7 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 200, 245, 200;
+  --background-end-rgb: 200, 245, 180;
 }
 
 body {
@@ -36,10 +36,20 @@ body {
 }
 
 @layer components {
+  .input {
+    @apply border rounded-lg px-4 py-2 active:ring-primary active:outline-primary focus:ring-primary focus:outline-primary;
+  }
   .btn {
-    @apply rounded-xl px-4 py-2 bg-primary text-white hover:cursor-pointer transition-all;
+    @apply rounded-xl px-4 py-2 bg-secondary  text-white hover:cursor-pointer transition-all shadow-lg border border-primary hover:from-green-700 hover:to-green-600 hover:border-secondary fade-in;
   }
   .btn-primary {
-    @apply btn;
+    @apply btn bg-gradient-radial from-green-600 to-green-500;
+  }
+  .btn-danger {
+    @apply btn !border-red-500 !bg-red-500 hover:!bg-red-700 hover:!border-red-700;
+  }
+
+  .btn-disabled {
+    @apply btn !bg-stone-300 !text-stone-500 !border-stone-300 hover:!bg-stone-300 hover:!border-stone-300 !cursor-not-allowed;
   }
 }

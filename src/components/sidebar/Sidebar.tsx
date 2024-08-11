@@ -1,6 +1,7 @@
 'use client';
 import { logout } from '@/actions';
 import { useSidemenuStore } from '@/store';
+import { useCalculatorStore } from '@/store/calculator-store';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -18,6 +19,7 @@ import {
 
 export const Sidebar = () => {
   const { isSideMenuOpen, closeSideMenu: closeMenu } = useSidemenuStore();
+  const { products } = useCalculatorStore();
 
   const { data: session } = useSession();
   const isAuthenticated = !!session?.user;
@@ -128,7 +130,7 @@ export const Sidebar = () => {
       {/* Sidemenu */}
       <nav
         className={clsx(
-          'fixed p-5 right-0 bottom-0 max-sm:bottom-2 max-sm:right-2 max-sm:w-auto sm:w-[500px] max-sm:h-auto h-screen bg-gradient-to-b from-white to-green-50 z-20 shadow-2xl transform transition-all duration-300 max-sm:rounded-xl overflow-y-auto',
+          'fixed py-5 right-0 bottom-0 max-sm:bottom-2 max-sm:right-2 max-sm:w-auto sm:w-[500px] max-sm:h-auto h-screen bg-gradient-to-b from-white to-green-50 z-20 shadow-2xl transform transition-all duration-300 max-sm:rounded-xl overflow-y-auto',
           {
             'translate-x-full max-sm:translate-x-[120%] max-sm:translate-y-[25%] ':
               !isSideMenuOpen,
@@ -140,25 +142,29 @@ export const Sidebar = () => {
             Hola, {session?.user?.name?.split(' ')[0]}!
           </h2>
         )}
-        <div className="flex flex-col gap-1 ">
+        <div className="flex flex-col gap-1">
           {links.map((link) =>
             link.type === 'link' ? (
-              <Link
-                key={link.text}
-                href={link.href || ''}
-                className={clsx(
-                  'p-2 flex gap-4 hover:text-secondary',
-                  pathname === link.href && 'text-secondary',
-                )}
-                onClick={link.onClick}
-              >
-                {link.icon}
-                <p className="text-xl">{link.text}</p>
-              </Link>
+              link.text === 'Calculadora' && !products.length ? null : (
+                <Link
+                  key={link.text}
+                  href={link.href || ''}
+                  className={clsx(
+                    'p-2 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
+                    pathname === link.href && 'text-white bg-secondary',
+                  )}
+                  onClick={link.onClick}
+                >
+                  {link.icon}
+                  <p className="text-xl">{link.text}</p>
+                </Link>
+              )
             ) : (
               <button
                 key={link.text}
-                className={clsx('p-2 flex gap-4 hover:text-secondary')}
+                className={clsx(
+                  'p-2 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
+                )}
                 onClick={link.onClick}
               >
                 {link.icon}
