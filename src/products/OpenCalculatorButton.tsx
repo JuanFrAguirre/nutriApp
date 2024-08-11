@@ -18,7 +18,7 @@ export const OpenCalculatorButton = () => {
     <button
       onClick={navigateToCalculator}
       className={clsx(
-        'fixed flex items-center justify-center p-2 rounded-full shadow-lg bg-gradient-radial from-green-600 to-green-500 bottom-24 right-5 btn-primary z-90',
+        'fixed flex items-center justify-center p-2 rounded-full shadow-lg shadow-green-700/75 bottom-24 right-5 btn-primary z-90 fade-in transition-all',
         !products.length && 'hidden',
       )}
     >

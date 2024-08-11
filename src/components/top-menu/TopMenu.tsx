@@ -17,11 +17,13 @@ export const TopMenu = () => {
     <nav>
       <button
         onClick={closeMenu}
-        className="fixed flex items-center justify-center p-2 rounded-full shadow-lg bg-gradient-radial from-green-600 to-green-500 bottom-10 right-5 btn-primary z-90"
+        className="fixed flex items-center justify-center p-2 rounded-full shadow-lg shadow-green-700/75 bg-gradient-radial from-green-600 to-green-500 bottom-10 right-5 btn-primary z-90"
       >
         <IoMenuOutline size={30} />
       </button>
-      {pathname !== '/calculator' && <OpenCalculatorButton />}
+      {!['/calculator', '/products/new', '/dishes/new'].includes(pathname) && (
+        <OpenCalculatorButton />
+      )}
     </nav>
   );
 };
