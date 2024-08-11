@@ -14,7 +14,7 @@ export default async function SignInPage() {
   if (session?.user) redirect('/');
   return (
     <div className="flex flex-col py-20 justify-between items-center gap-10 grow px-10 max-w-xl mx-auto">
-      <div className="space-y-10">
+      <div className="space-y-10 flex flex-col items-center">
         <Image
           alt="NutriAppPro"
           src={Logo}
