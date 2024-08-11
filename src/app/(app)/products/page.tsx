@@ -4,8 +4,6 @@ import { Product } from '@/products';
 export default async function ProductsPage() {
   const products = await getProducts();
 
-  products.forEach((product) => console.log(product));
-
   return (
     <main className="flex grow justify-center items-center flex-col gap-10 mb-32 mt-10">
       <h1 className="text-3xl font-semibold text-secondary">Productos</h1>

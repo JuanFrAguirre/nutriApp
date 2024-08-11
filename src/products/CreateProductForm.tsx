@@ -24,7 +24,6 @@ export const CreateProductForm = () => {
 
   const handleNewProductCreation = useCallback(async () => {
     const product = await postProduct(newProduct);
-    console.log(product);
     router.push('/products');
   }, [newProduct, router]);
 

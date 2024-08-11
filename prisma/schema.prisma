@@ -51,6 +51,8 @@ model User {
   Entry_Dish    Entry_Dish[]
   CalendarEntry CalendarEntry[]
   Dish          Dish[]
+
+  @@index([email])
 }
 
 model VerificationToken {
@@ -88,8 +90,8 @@ model Dish_Product {
   productId String
   product   Product @relation(fields: [productId], references: [id])
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  userEmail String
+  user      User   @relation(fields: [userEmail], references: [email])
 
   dishId String
   dish   Dish   @relation(fields: [dishId], references: [id])
@@ -99,8 +101,8 @@ model Dish {
   id    String @id @default(uuid())
   title String
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  userEmail String
+  user      User   @relation(fields: [userEmail], references: [email])
 
   Entry_Dish Entry_Dish[]
 
@@ -111,8 +113,8 @@ model Entry_Dish {
   id       String @id @default(uuid())
   quantity String
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  userEmail String
+  user      User   @relation(fields: [userEmail], references: [email])
 
   dishId String
   Dish   Dish   @relation(fields: [dishId], references: [id])
@@ -125,8 +127,8 @@ model CalendarEntry {
   id   String   @id @default(uuid())
   date DateTime
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  userEmail String
+  user      User   @relation(fields: [userEmail], references: [email])
 
   Entry_Dish Entry_Dish[]
 }
