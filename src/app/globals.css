@@ -2,24 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --background-end-rgb: 214, 219, 220; */
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 200, 255, 200;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
+      to bottom right,
       transparent,
       rgb(var(--background-end-rgb))
     )
@@ -29,5 +22,24 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+.fade-in {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+@layer components {
+  .btn {
+    @apply rounded-xl px-4 py-2 bg-primary text-white hover:cursor-pointer transition-all;
+  }
+  .btn-primary {
+    @apply btn;
   }
 }
