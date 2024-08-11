@@ -13,9 +13,9 @@ export default async function AppLayoutLayout({
 
   return (
     <>
-      <TopMenu />
-      <Sidebar />
       {children}
+      <Sidebar />
+      <TopMenu />
     </>
   );
 }

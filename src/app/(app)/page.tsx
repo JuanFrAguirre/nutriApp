@@ -7,7 +7,7 @@ export default async function Home() {
 
   if (!session) redirect('/auth/signin');
 
-  redirect('/calendar');
+  redirect('/products');
 
   return (
     <main className="flex flex-col items-center justify-center gap-20 grow">

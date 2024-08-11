@@ -40,13 +40,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String          @id @default(uuid())
   name          String?
-  email         String?   @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Dish_Product  Dish_Product[]
+  Entry_Dish    Entry_Dish[]
+  CalendarEntry CalendarEntry[]
+  Dish          Dish[]
 }
 
 model VerificationToken {
@@ -55,4 +59,74 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum UnitType {
+  relative
+  absolute
+}
+
+model Product {
+  id               String  @id @default(uuid())
+  title            String
+  tags             String?
+  image            String?
+  calories         Float
+  proteins         Float
+  carbohydrates    Float
+  fats             Float
+  presentationSize Float
+
+  Dish_Product Dish_Product[]
+}
+
+model Dish_Product {
+  id            String   @id @default(uuid())
+  unitType      UnitType
+  portionWeight Float
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  dishId String
+  dish   Dish   @relation(fields: [dishId], references: [id])
+}
+
+model Dish {
+  id    String @id @default(uuid())
+  title String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  Entry_Dish Entry_Dish[]
+
+  Dish_Product Dish_Product[]
+}
+
+model Entry_Dish {
+  id       String @id @default(uuid())
+  quantity String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  dishId String
+  Dish   Dish   @relation(fields: [dishId], references: [id])
+
+  calendarEntryId String
+  calendarEntry   CalendarEntry @relation(fields: [calendarEntryId], references: [id])
+}
+
+model CalendarEntry {
+  id   String   @id @default(uuid())
+  date DateTime
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  Entry_Dish Entry_Dish[]
 }
