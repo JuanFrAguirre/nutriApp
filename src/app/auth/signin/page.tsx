@@ -54,9 +54,11 @@ export default async function SignInPage() {
           >
             <button
               type="submit"
-              className={clsx('btn-primary w-full', {
-                'bg-blue-600': provider.name.toLowerCase() === 'google',
-                'bg-black': provider.name.toLowerCase() === 'github',
+              className={clsx('btn w-full', {
+                'bg-blue-600 border-blue-500 hover:border-blue-600':
+                  provider.name.toLowerCase() === 'google',
+                'bg-black border-black hover:border-black':
+                  provider.name.toLowerCase() === 'github',
               })}
             >
               <div className="flex flex-row gap-2 max-sm:px-4 sm:gap-4 items-center justify-between sm:justify-center py-1">
