@@ -29,7 +29,6 @@ export const EditProductForm = ({ product }: Props) => {
   );
 
   const handleSubmitEditProduct = useCallback(async () => {
-    console.log(updatedProduct);
     await editProduct(updatedProduct);
     router.refresh();
   }, [updatedProduct, router]);
