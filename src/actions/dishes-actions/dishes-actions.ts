@@ -1,5 +1,5 @@
 'use server';
-import { DishProduct } from '@/interfaces/interfaces';
+import { DishProduct, DishWithProducts } from '@/interfaces/interfaces';
 import prisma from '@/lib/prisma';
 
 export const getDishes = async () => {
@@ -15,7 +15,19 @@ export const getDishes = async () => {
   }
 };
 export const getDishById = async () => {};
-export const deleteDishById = async () => {};
+
+export const deleteDishById = async (dishId: string) => {
+  try {
+    await prisma.dish_Product.deleteMany({ where: { dishId } });
+    await prisma.dish.delete({ where: { id: dishId } });
+
+    return { ok: true, message: 'Dish deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: 'Error deleting this dish' };
+  }
+};
+
 export const createDish = async ({
   products,
   userEmail,

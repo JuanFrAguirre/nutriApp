@@ -87,7 +87,7 @@ export const Product = ({
         isProductInCalculator && !isOnCalculatorPage
           ? 'border-primary !bg-secondary/15'
           : 'border-stone-50',
-        isOnCalculatorPage && 'cursor-default',
+        isOnCalculatorPage ? 'cursor-default' : 'cursor-pointer',
       )}
       onClick={
         !isOnCalculatorPage
@@ -175,7 +175,7 @@ export const Product = ({
           {unitType === 'relative' && (
             <div className="flex w-full">
               <select
-                className="w-full"
+                className="w-full input"
                 value={
                   calcProduct?.portionWeight
                     ? calcProduct.portionWeight / calcProduct.presentationSize
@@ -209,7 +209,7 @@ export const Product = ({
           {unitType === 'absolute' && (
             <div className="flex w-full">
               <input
-                className="w-full text-center"
+                className="w-full text-center input"
                 placeholder="Peso en gramos..."
                 type="number"
                 min={1}
@@ -234,7 +234,7 @@ export const Product = ({
 
             <p className="flex justify-between">
               Calorías
-              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
+              <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
                 {(calcProduct.calories * portionWeight * 0.01).toFixed(2)}
                 kcal
@@ -242,21 +242,21 @@ export const Product = ({
             </p>
             <p className="flex justify-between">
               Proteínas
-              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
+              <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
                 {(calcProduct.proteins * portionWeight * 0.01).toFixed(2)}g
               </span>
             </p>
             <p className="flex justify-between">
               Carbos
-              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
+              <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
                 {(calcProduct.carbohydrates * portionWeight * 0.01).toFixed(2)}g
               </span>
             </p>
             <p className="flex justify-between">
               Grasas
-              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
+              <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
                 {(calcProduct.fats * portionWeight * 0.01).toFixed(2)}g
               </span>

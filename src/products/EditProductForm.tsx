@@ -81,7 +81,7 @@ export const EditProductForm = ({ product }: Props) => {
 
   return (
     <form
-      className="flex flex-col gap-10 w-full px-4 grow"
+      className="flex flex-col gap-10 w-full px-4 grow max-w-7xl mx-auto"
       onSubmit={handleSubmit(handleSubmitEditProduct)}
     >
       <div className="flex flex-col gap-2">
@@ -138,9 +138,10 @@ export const EditProductForm = ({ product }: Props) => {
         />
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         <p className="font-semibold">
           Información nutricional
+          <br />
           <small> (cada 100g)</small>
         </p>
         <div className="grid grid-cols-2 gap-4">
@@ -149,12 +150,12 @@ export const EditProductForm = ({ product }: Props) => {
               Calorías *
             </label>
             <input
-              {...register('calories', { required: true })}
               type="number"
-              step={0.01}
               className="input"
               placeholder="123kcal"
               id="calories"
+              step={0.01}
+              {...register('calories', { required: true })}
             />
           </div>
 

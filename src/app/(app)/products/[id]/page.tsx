@@ -19,7 +19,7 @@ export default async function ProductByIdPage({ params }: Props) {
 
   return (
     <main className="flex grow justify-center items-center flex-col gap-10 mb-32 mt-10">
-      <div className="w-full space-y-2">
+      <div className="w-full space-y-2 max-w-7xl mx-auto">
         <div className="flex justify-between">
           <Link
             href={'/products'}

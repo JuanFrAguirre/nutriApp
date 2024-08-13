@@ -19,7 +19,7 @@ export const DeleteProductButton = ({ id }: Props) => {
         await deleteProductById(id);
         window.location.href = '/products';
       },
-      true,
+      false,
     );
   };
 

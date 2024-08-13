@@ -3,6 +3,7 @@ import { DEFAULT_IMAGE } from '@/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useCallback } from 'react';
+import { DishButtons } from './DishButtons';
 
 interface Props {
   dish: DishWithProducts;
@@ -14,11 +15,11 @@ export const Dish = ({ dish, className }: Props) => {
     value: 'calories' | 'proteins' | 'carbohydrates' | 'fats',
   ) => {
     return dish.Dish_Product.reduce(
-      (acc, curr) => acc + curr.product[value],
+      (acc, curr) => acc + curr.product[value] * curr.portionWeight * 0.01,
       0,
     ).toLocaleString('es-ar', {
       minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: value === 'calories' ? 0 : 2,
     });
   };
 
@@ -26,14 +27,22 @@ export const Dish = ({ dish, className }: Props) => {
     <article
       className={clsx(
         className,
-        'py-4 border bg-white/50 border-stone-50 shadow rounded-xl flex flex-col',
+        'border bg-white/50 border-stone-50 shadow rounded-xl flex flex-col relative max-h-[360px] sm:max-h-[500px] md:max-h-[600px]',
       )}
       id={dish.id}
     >
-      <p className="sm:text-lg text-secondary line-clamp-2 mx-2 pb-4 mr-4">
-        {dish.title}
-      </p>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 justify-items-center overflow-y-auto max-h-[200px] p-3 border-y border-stone-200">
+      {/* Dish buttons */}
+      <div className="absolute top-0 right-0">
+        <DishButtons dish={dish} />
+      </div>
+
+      {/* Dish card */}
+      <div className="max-sm:py-2 py-3">
+        <p className="sm:text-lg text-secondary line-clamp-2 mx-2 mr-6 break-words h-12 sm:h-14">
+          {dish.title}
+        </p>
+      </div>
+      <div className="auto-rows-min grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 place-items-center overflow-y-auto grow px-3 border-t border-stone-200 py-2 sm:py-3">
         {dish.Dish_Product.map((dishProduct) => (
           <Image
             className="border-stone-100 rounded-xl border shadow"
@@ -45,34 +54,33 @@ export const Dish = ({ dish, className }: Props) => {
           />
         ))}
       </div>
-      <div className="grow"></div>
 
-      <div className="p-4 pb-0 grid sm:grid-cols-2 sm:justify-items-center gap-0 sm:gap-2 border-t border-stone-200">
+      <div className="px-4 grid sm:grid-cols-2 sm:justify-items-center gap-0 sm:gap-2 border-t border-stone-200 py-2 sm:py-2">
         <p className="max-sm:flex justify-between">
           Calorías <br />
-          <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
-          <span className="text-secondary">
+          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
+          <span className="text-secondary line-clamp-1">
             {renderSelectedNutritionalValue('calories')}kcal
           </span>
         </p>
         <p className="max-sm:flex justify-between">
           Proteínas <br />
-          <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
-          <span className="text-secondary">
+          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
+          <span className="text-secondary line-clamp-1">
             {renderSelectedNutritionalValue('proteins')}g
           </span>
         </p>
         <p className="max-sm:flex justify-between">
           Carbos <br />
-          <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
-          <span className="text-secondary">
+          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
+          <span className="text-secondary line-clamp-1">
             {renderSelectedNutritionalValue('carbohydrates')}g
           </span>
         </p>
         <p className="max-sm:flex justify-between">
           Grasas <br />
-          <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
-          <span className="text-secondary">
+          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
+          <span className="text-secondary line-clamp-1">
             {renderSelectedNutritionalValue('fats')}g
           </span>
         </p>

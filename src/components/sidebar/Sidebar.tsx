@@ -54,7 +54,6 @@ export const Sidebar = () => {
             />
           </div>
         ),
-
         type: 'link',
       },
       {
@@ -64,21 +63,21 @@ export const Sidebar = () => {
         icon: <IoRestaurantOutline size={25} />,
         type: 'link',
       },
-      {
-        text: 'Agregar una comida',
-        href: '/dishes/new',
-        onClick: () => closeMenu(),
-        icon: (
-          <div className="relative w-[25px]">
-            <IoRestaurantOutline size={25} className="absolute" />
-            <IoAddCircleOutline
-              className="absolute -top-2 -right-2"
-              size={15}
-            />
-          </div>
-        ),
-        type: 'link',
-      },
+      // {
+      //   text: 'Agregar una comida',
+      //   href: '/dishes/new',
+      //   onClick: () => closeMenu(),
+      //   icon: (
+      //     <div className="relative w-[25px]">
+      //       <IoRestaurantOutline size={25} className="absolute" />
+      //       <IoAddCircleOutline
+      //         className="absolute -top-2 -right-2"
+      //         size={15}
+      //       />
+      //     </div>
+      //   ),
+      //   type: 'link',
+      // },
       {
         text: 'Calculadora',
         href: '/calculator',
@@ -87,7 +86,7 @@ export const Sidebar = () => {
         type: 'link',
       },
       {
-        text: 'Calendario',
+        text: 'Registros',
         href: '/calendar',
         onClick: () => closeMenu(),
         icon: <IoCalendarOutline size={25} />,
@@ -145,20 +144,18 @@ export const Sidebar = () => {
         <div className="flex flex-col gap-px">
           {links.map((link) =>
             link.type === 'link' ? (
-              link.text === 'Calculadora' && !products.length ? null : (
-                <Link
-                  key={link.text}
-                  href={link.href || ''}
-                  className={clsx(
-                    'py-3 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
-                    pathname === link.href && 'text-white bg-secondary group',
-                  )}
-                  onClick={link.onClick}
-                >
-                  {link.icon}
-                  <p className="text-xl">{link.text}</p>
-                </Link>
-              )
+              <Link
+                key={link.text}
+                href={link.href || ''}
+                className={clsx(
+                  'py-3 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
+                  pathname === link.href && 'text-white bg-secondary group',
+                )}
+                onClick={link.onClick}
+              >
+                {link.icon}
+                <p className="text-xl">{link.text}</p>
+              </Link>
             ) : (
               <button
                 key={link.text}
