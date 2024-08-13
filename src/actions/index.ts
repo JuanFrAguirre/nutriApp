@@ -13,3 +13,4 @@ export {
   editProduct,
   deleteProductById,
 } from './product-actions/product-actions';
+export { getCalendarEntries } from './calendar-entries-actions/calendar-entries-actions';

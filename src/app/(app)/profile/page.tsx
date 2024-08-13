@@ -1,3 +1,4 @@
+import { getCalendarEntries, getDishes } from '@/actions';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import Image from 'next/image';
@@ -7,6 +8,9 @@ export default async function ProfilePage() {
   const session = await auth();
 
   const { name, email, image } = session?.user!;
+
+  const dishes = await getDishes();
+  const entries = await getCalendarEntries();
 
   if (!session) redirect('/');
 
@@ -33,12 +37,12 @@ export default async function ProfilePage() {
         <p className="text-lg">
           <span className="text-secondary">Comidas guardadas</span>
           <br />
-          {0}
+          {dishes.length}
         </p>
         <p className="text-lg">
           <span className="text-secondary">Días trackeados</span>
           <br />
-          {0}
+          {entries.length}
         </p>
       </div>
     </main>
