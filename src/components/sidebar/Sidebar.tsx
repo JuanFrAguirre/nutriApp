@@ -130,9 +130,9 @@ export const Sidebar = () => {
       {/* Sidemenu */}
       <nav
         className={clsx(
-          'fixed py-5 right-0 bottom-0 max-sm:bottom-2 max-sm:right-2 max-sm:w-auto sm:w-[500px] max-sm:h-auto h-screen bg-gradient-to-b from-white to-green-50 z-20 shadow-2xl transform transition-all duration-300 max-sm:rounded-xl overflow-y-auto',
+          'fixed py-5 right-0 bottom-0 max-md:bottom-2 max-md:right-2 max-md:w-auto md:w-[500px] max-md:h-auto h-screen bg-gradient-to-b from-white to-green-50 z-20 shadow-2xl transform transition-all duration-300 max-md:rounded-xl overflow-y-auto',
           {
-            'translate-x-full max-sm:translate-x-[120%] max-sm:translate-y-[25%] ':
+            'translate-x-full max-md:translate-x-[120%] max-md:translate-y-[25%] ':
               !isSideMenuOpen,
           },
         )}
@@ -142,7 +142,7 @@ export const Sidebar = () => {
             Hola, {session?.user?.name?.split(' ')[0]}!
           </h2>
         )}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-px">
           {links.map((link) =>
             link.type === 'link' ? (
               link.text === 'Calculadora' && !products.length ? null : (
@@ -150,8 +150,8 @@ export const Sidebar = () => {
                   key={link.text}
                   href={link.href || ''}
                   className={clsx(
-                    'p-2 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
-                    pathname === link.href && 'text-white bg-secondary',
+                    'py-3 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
+                    pathname === link.href && 'text-white bg-secondary group',
                   )}
                   onClick={link.onClick}
                 >

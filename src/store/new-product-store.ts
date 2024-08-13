@@ -12,12 +12,11 @@ export const INITIAL_STATE: DishProduct = {
   title: '',
   tags: '',
   image: '',
+  presentationSize: 100,
   calories: 0,
   proteins: 0,
   carbohydrates: 0,
   fats: 0,
-  presentationSize: 100,
-  unitType: 'relative',
 };
 
 export const useNewProductStore = create<State>()(

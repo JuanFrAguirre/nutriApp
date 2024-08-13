@@ -15,13 +15,19 @@ import { CgSpinner } from 'react-icons/cg';
 import { HiPencilSquare } from 'react-icons/hi2';
 import { IoAddOutline, IoCheckmarkOutline } from 'react-icons/io5';
 import { LiaTrashAlt } from 'react-icons/lia';
+import NO_IMAGE from '../../public/No_Image_Available.jpg';
 
 interface Props {
   product: DishProduct;
   isOnCalculatorPage?: boolean;
+  className?: string;
 }
 
-export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
+export const Product = ({
+  product,
+  isOnCalculatorPage = false,
+  className,
+}: Props) => {
   const addProductToCalculator = useCalculatorStore(
     (store) => store.addProductToCalculator,
   );
@@ -73,11 +79,13 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
 
   return (
     <div
+      id={product.id}
       key={calcProduct.id}
       className={clsx(
-        'p-3 border rounded-xl flex flex-col gap-2 bg-white relative transition-all',
+        className,
+        'p-3 border rounded-xl flex flex-col gap-2 bg-white/50 shadow relative transition-all',
         isProductInCalculator && !isOnCalculatorPage
-          ? 'border-primary !bg-green-50'
+          ? 'border-primary !bg-secondary/15'
           : 'border-stone-50',
         isOnCalculatorPage && 'cursor-default',
       )}
@@ -92,7 +100,7 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
       {/* Buttons for adding to/removing from calculator and editing product */}
       {!isOnCalculatorPage && (
         <>
-          <button className="absolute -top-3 -right-3 rounded-full overflow-hidden">
+          <button className="absolute -top-3 -right-1.5 rounded-full overflow-hidden">
             {isProductInCalculator ? (
               <IoCheckmarkOutline
                 size={30}
@@ -107,7 +115,7 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
           </button>
 
           <button
-            className="absolute top-6 -right-3 rounded-full overflow-hidden"
+            className="absolute top-6 -right-1.5 rounded-full overflow-hidden"
             onClick={navigateToEditProduct}
           >
             <HiPencilSquare
@@ -130,13 +138,15 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
           />
         </button>
       )}
-      <p className="grow text-secondary text-left">{product.title}</p>
+
+      <p className="grow text-secondary text-left pr-4">{product.title}</p>
+
       <Image
-        src={calcProduct.image || ''}
+        src={calcProduct.image || NO_IMAGE}
         alt={calcProduct.title}
         width={500}
         height={500}
-        className="w-30 h-30 rounded-xl border-stone-50 border"
+        className="w-30 h-30 rounded-xl"
       />
 
       {isOnCalculatorPage ? (
@@ -183,82 +193,15 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
                   });
                 }}
               >
-                <option
-                  value="0.2"
-                  selected={
-                    calcProduct.unitType === 'relative' && portionWeight === 0.2
-                  }
-                >
-                  1/5 unidad
-                </option>
-                <option
-                  value="0.25"
-                  selected={
-                    calcProduct.unitType === 'relative' &&
-                    portionWeight === 0.25
-                  }
-                >
-                  1/4 unidad
-                </option>
-                <option
-                  value="0.33"
-                  selected={
-                    calcProduct.unitType === 'relative' &&
-                    portionWeight === 0.33
-                  }
-                >
-                  1/3 unidad
-                </option>
-                <option
-                  value="0.5"
-                  selected={
-                    calcProduct.unitType === 'relative' && portionWeight === 0.5
-                  }
-                >
-                  1/2 unidad
-                </option>
-                <option
-                  value="1"
-                  selected={
-                    (calcProduct.unitType === 'relative' &&
-                      portionWeight === 1) ||
-                    true
-                  }
-                >
-                  1 unidad
-                </option>
-                <option
-                  value="2"
-                  selected={
-                    calcProduct.unitType === 'relative' && portionWeight === 2
-                  }
-                >
-                  2 unidades
-                </option>
-                <option
-                  value="3"
-                  selected={
-                    calcProduct.unitType === 'relative' && portionWeight === 3
-                  }
-                >
-                  3 unidades
-                </option>
-                <option
-                  value="4"
-                  selected={
-                    calcProduct.unitType === 'relative' && portionWeight === 4
-                  }
-                >
-                  4 unidades
-                </option>
-                <option
-                  value="5"
-                  selected={
-                    calcProduct.unitType === 'relative' && portionWeight === 5
-                  }
-                >
-                  5 unidades
-                </option>
+                <option value="0.2">1/5 unidad</option>
+                <option value="0.25">1/4 unidad</option>
+                <option value="0.33">1/3 unidad</option>
+                <option value="0.5">1/2 unidad</option>
+                <option value="1">1 unidad</option>
+                <option value="2">2 unidades</option>
+                <option value="3">3 unidades</option>
+                <option value="4">4 unidades</option>
+                <option value="5">5 unidades</option>
               </select>
             </div>
           )}
@@ -291,6 +234,7 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
 
             <p className="flex justify-between">
               Calorías
+              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
               <span className="text-secondary">
                 {(calcProduct.calories * portionWeight * 0.01).toFixed(2)}
                 kcal
@@ -298,18 +242,21 @@ export const Product = ({ product, isOnCalculatorPage = false }: Props) => {
             </p>
             <p className="flex justify-between">
               Proteínas
+              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
               <span className="text-secondary">
                 {(calcProduct.proteins * portionWeight * 0.01).toFixed(2)}g
               </span>
             </p>
             <p className="flex justify-between">
               Carbos
+              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
               <span className="text-secondary">
                 {(calcProduct.carbohydrates * portionWeight * 0.01).toFixed(2)}g
               </span>
             </p>
             <p className="flex justify-between">
               Grasas
+              <div className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></div>
               <span className="text-secondary">
                 {(calcProduct.fats * portionWeight * 0.01).toFixed(2)}g
               </span>

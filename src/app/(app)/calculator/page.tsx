@@ -1,26 +1,82 @@
 'use client';
+import { createDish } from '@/actions';
 import { Product } from '@/products';
 import { useCalculatorStore } from '@/store/calculator-store';
-import { redirect } from 'next/navigation';
+import { useConfirmationStore } from '@/store/confirmation-store';
+import { useSession } from 'next-auth/react';
+import { redirect, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { CgSpinner } from 'react-icons/cg';
 import { IoAddOutline } from 'react-icons/io5';
 import { LiaTrashAlt } from 'react-icons/lia';
 
 export default function CalculatorPage() {
   const { products, clearCalculator } = useCalculatorStore();
+  const { openConfirmation } = useConfirmationStore();
+  const session = useSession();
+  const router = useRouter();
 
-  const getRenderableValue = (
-    value: 'calories' | 'proteins' | 'fats' | 'carbohydrates',
-  ) =>
-    products
-      .reduce(
-        (acc, curr) =>
-          acc +
-          curr[value] *
-            (curr.portionWeight ? curr.portionWeight : curr.presentationSize) *
-            0.01,
-        0,
-      )
-      .toFixed(2);
+  const [loading, setLoading] = useState(true);
+
+  const openConfirmationAsync = useCallback(
+    (message: string): Promise<string | null> => {
+      return new Promise((resolve) => {
+        openConfirmation(
+          message,
+          (text) => {
+            if (!text) return resolve(null);
+            resolve(text);
+          },
+          true,
+        );
+      });
+    },
+    [openConfirmation],
+  );
+
+  const handleCreateDish = useCallback(async () => {
+    let title = await openConfirmationAsync('Nombre de la comida');
+
+    if (!title) return;
+
+    const newDish = await createDish({
+      products,
+      title,
+      userEmail: session.data?.user?.email!,
+    });
+
+    clearCalculator();
+    window.location.href = `/dishes#${newDish.dish?.id}`;
+  }, [products, session, openConfirmationAsync, clearCalculator]);
+
+  const getRenderableValue = useCallback(
+    (value: 'calories' | 'proteins' | 'fats' | 'carbohydrates') => {
+      return products
+        .reduce(
+          (acc, curr) =>
+            acc +
+            curr[value] *
+              (curr.portionWeight
+                ? curr.portionWeight
+                : curr.presentationSize) *
+              0.01,
+          0,
+        )
+        .toFixed(2);
+    },
+    [products],
+  );
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  if (loading)
+    return (
+      <div className="w-full flex justify-center items-center h-screen fade-in transition-all">
+        <CgSpinner size={50} className="animate-spin text-secondary" />
+      </div>
+    );
 
   if (!products.length) {
     redirect('/products');
@@ -29,7 +85,7 @@ export default function CalculatorPage() {
   return (
     <main className="flex grow justify-center items-center flex-col gap-10 mb-52 md:mb-72 mt-10">
       <h1 className="text-3xl font-semibold text-secondary">Calculadora</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 max-w-7xl px-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 max-w-7xl max-sm:px-2 px-4 gap-4">
         {products.map((product) => (
           <Product key={product.id} product={product} isOnCalculatorPage />
         ))}
@@ -69,7 +125,7 @@ export default function CalculatorPage() {
           </div>
           <div className="flex flex-col gap-2 col-span-3 justify-self-center">
             <button
-              onClick={clearCalculator}
+              onClick={handleCreateDish}
               className="btn-primary p-1 flex max-sm:flex-col max-sm:items-center rounded-full justify-center items-center"
             >
               <IoAddOutline size={30} className="" />
@@ -87,7 +143,7 @@ export default function CalculatorPage() {
       {/* Summary desktop */}
       <div className="max-md:hidden bg-white max-w-3xl mx-auto fixed bottom-0 w-full p-10 rounded-t-xl drop-shadow-xl border border-stone-100">
         <div className="flex">
-          <div className="grow grid grid-cols-2">
+          <div className="grow grid grid-cols-2 justify-items-center">
             <div className="flex flex-col justify-between">
               <p className="text-left text-lg">
                 Calorías: <br />

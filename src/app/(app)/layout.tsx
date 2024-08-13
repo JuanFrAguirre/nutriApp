@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { Sidebar, TopMenu } from '@/components';
+import { Confirmation, Sidebar, TopMenu } from '@/components';
 import { redirect } from 'next/navigation';
 
 export default async function AppLayoutLayout({
@@ -15,6 +15,7 @@ export default async function AppLayoutLayout({
     <>
       {children}
       <Sidebar />
+      <Confirmation />
       <TopMenu />
     </>
   );

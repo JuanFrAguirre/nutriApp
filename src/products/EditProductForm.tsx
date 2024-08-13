@@ -6,36 +6,65 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { CgSpinner } from 'react-icons/cg';
+import { ALLOWED_IMAGE_SOURCES } from './CreateProductForm';
 
 interface Props {
   product: DishProduct;
 }
 
+interface FormInputs {
+  title: string;
+  tags: string;
+  image: string;
+  presentationSize: number;
+  calories: number;
+  proteins: number;
+  carbohydrates: number;
+  fats: number;
+}
+
 export const EditProductForm = ({ product }: Props) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { isValid, isDirty },
+    reset,
+  } = useForm<FormInputs>({
+    defaultValues: product,
+  });
+
   const [loading, setLoading] = useState(true);
-  const [updatedProduct, setUpdatedProduct] = useState(product);
   const router = useRouter();
 
-  const handleUpdateProduct = useCallback(
-    (field: string, value: string | number) =>
-      setUpdatedProduct((prev) => ({ ...prev, [field]: value })),
-    [],
-  );
+  const handleSubmitEditProduct = useCallback(
+    async (data: FormInputs) => {
+      const {
+        title,
+        tags,
+        image,
+        presentationSize,
+        calories,
+        proteins,
+        carbohydrates,
+        fats,
+      } = data;
 
-  const handleResetProduct = useCallback(
-    () => setUpdatedProduct(product),
+      await editProduct({
+        ...product,
+        title,
+        tags,
+        image: ALLOWED_IMAGE_SOURCES.includes(image) ? image : '',
+        presentationSize: Number(presentationSize),
+        calories: Number(calories),
+        proteins: Number(proteins),
+        carbohydrates: Number(carbohydrates),
+        fats: Number(fats),
+      });
+      window.location.reload();
+    },
     [product],
-  );
-
-  const handleSubmitEditProduct = useCallback(async () => {
-    await editProduct(updatedProduct);
-    router.refresh();
-  }, [updatedProduct, router]);
-
-  const isProductClean = useMemo(
-    () => _.isEqual(product, updatedProduct),
-    [product, updatedProduct],
   );
 
   useEffect(() => {
@@ -51,18 +80,20 @@ export const EditProductForm = ({ product }: Props) => {
     );
 
   return (
-    <form className="flex flex-col gap-10 w-full px-4 grow">
+    <form
+      className="flex flex-col gap-10 w-full px-4 grow"
+      onSubmit={handleSubmit(handleSubmitEditProduct)}
+    >
       <div className="flex flex-col gap-2">
         <label className="font-semibold" htmlFor="title">
           Título *
         </label>
         <input
+          {...register('title', { required: true })}
           type="text"
           className="input"
           placeholder="Arroz"
           id="title"
-          value={updatedProduct.title}
-          onChange={(e) => handleUpdateProduct('title', e.target.value)}
         />
       </div>
 
@@ -71,12 +102,11 @@ export const EditProductForm = ({ product }: Props) => {
           URL de imagen
         </label>
         <input
+          {...register('image')}
           type="text"
           className="input"
           placeholder="https://sitio-de-la-image.com/123"
           id="image"
-          value={updatedProduct.image}
-          onChange={(e) => handleUpdateProduct('image', e.target.value)}
         />
       </div>
 
@@ -85,12 +115,26 @@ export const EditProductForm = ({ product }: Props) => {
           Etiquetas (solo separadas por comas)
         </label>
         <input
+          {...register('tags')}
           type="text"
           className="input"
           placeholder="arroz,mercadona,congelado"
           id="tags"
-          value={updatedProduct.tags}
-          onChange={(e) => handleUpdateProduct('tags', e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <label className="font-semibold" htmlFor="presentationSize">
+          Tamaño por unidad *<br />
+          <small>(en gramos)</small>
+        </label>
+        <input
+          type="number"
+          step={0.01}
+          className="input"
+          placeholder="120g"
+          id="presentationSize"
+          {...register('presentationSize', { required: true })}
         />
       </div>
 
@@ -105,14 +149,12 @@ export const EditProductForm = ({ product }: Props) => {
               Calorías *
             </label>
             <input
+              {...register('calories', { required: true })}
               type="number"
+              step={0.01}
               className="input"
               placeholder="123kcal"
               id="calories"
-              value={updatedProduct.calories}
-              onChange={(e) =>
-                handleUpdateProduct('calories', Number(e.target.value))
-              }
             />
           </div>
 
@@ -121,14 +163,12 @@ export const EditProductForm = ({ product }: Props) => {
               Proteínas *
             </label>
             <input
+              {...register('proteins', { required: true })}
               type="number"
+              step={0.01}
               className="input"
               placeholder="34g"
               id="proteins"
-              value={updatedProduct.proteins}
-              onChange={(e) =>
-                handleUpdateProduct('proteins', Number(e.target.value))
-              }
             />
           </div>
         </div>
@@ -140,14 +180,12 @@ export const EditProductForm = ({ product }: Props) => {
             Carbos *
           </label>
           <input
+            {...register('carbohydrates', { required: true })}
             type="number"
+            step={0.01}
             className="input"
             placeholder="34g"
             id="carbohydrates"
-            value={updatedProduct.carbohydrates}
-            onChange={(e) =>
-              handleUpdateProduct('carbohydrates', Number(e.target.value))
-            }
           />
         </div>
 
@@ -156,66 +194,30 @@ export const EditProductForm = ({ product }: Props) => {
             Grasas *
           </label>
           <input
+            {...register('fats', { required: true })}
             type="number"
+            step={0.01}
             className="input"
             placeholder="34g"
             id="fats"
-            value={updatedProduct.fats}
-            onChange={(e) =>
-              handleUpdateProduct('fats', Number(e.target.value))
-            }
           />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold" htmlFor="presentationSize">
-            Tamaño por unidad *
-          </label>
-          <input
-            type="number"
-            className="input"
-            placeholder="120g"
-            id="presentationSize"
-            value={updatedProduct.presentationSize}
-            onChange={(e) =>
-              handleUpdateProduct('presentationSize', Number(e.target.value))
-            }
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold" htmlFor="unitType">
-            Tipo de unidad
-          </label>
-          <select
-            id="unitType"
-            className="input"
-            value={updatedProduct.unitType}
-            onChange={(e) => handleUpdateProduct('unitType', e.target.value)}
-          >
-            <option value="relative">Relativa</option>
-            <option value="absolute">Absoluta</option>
-          </select>
         </div>
       </div>
 
       <div className="grow"></div>
       <div className="grid grid-cols-2 items-center gap-4">
         <button
-          className={clsx(isProductClean ? 'btn-disabled' : 'btn-danger')}
+          className={clsx(!isDirty || !isValid ? 'btn-disabled' : 'btn-danger')}
           type="button"
-          onClick={handleResetProduct}
-          disabled={isProductClean}
+          onClick={() => reset()}
+          disabled={!isDirty || !isValid}
         >
           Restablecer
         </button>
         <button
-          className={clsx(isProductClean ? 'btn-disabled' : 'btn')}
-          type="button"
-          onClick={handleSubmitEditProduct}
-          disabled={isProductClean}
+          className={clsx(!isDirty || !isValid ? 'btn-disabled' : 'btn')}
+          type="submit"
+          disabled={!isDirty || !isValid}
         >
           Guardar
         </button>

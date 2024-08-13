@@ -18,16 +18,18 @@ export const OpenCalculatorButton = () => {
     <button
       onClick={navigateToCalculator}
       className={clsx(
-        'fixed flex items-center justify-center p-2 rounded-full shadow-lg shadow-green-700/75 bottom-24 right-5 btn-primary z-90 fade-in transition-all',
+        'fixed flex items-center justify-center p-2 rounded-l-[18px] rounded-r-none shadow shadow-green-700/75 max-md:bottom-24 md:top-24 right-0 btn-primary z-90 fade-in transition-all pr-4 border border-green-600',
         !products.length && 'hidden',
       )}
     >
-      <IoCalculatorOutline size={30} />
-      {!!products.length && (
-        <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex justify-center items-center">
-          <small>{products.length}</small>
-        </div>
-      )}
+      <div className="relative">
+        <IoCalculatorOutline size={30} />
+        {!!products.length && (
+          <div className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-5 h-5 flex justify-center items-center">
+            <small>{products.length}</small>
+          </div>
+        )}
+      </div>
     </button>
   );
 };

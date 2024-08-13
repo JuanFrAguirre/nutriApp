@@ -1,3 +1,5 @@
+import prisma from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 export interface Product {
   id?: string;
   title: string;
@@ -16,3 +18,7 @@ export interface DishProduct extends Product {
   unitType?: UnitTypes;
   portionWeight?: number;
 }
+
+export type DishWithProducts = Prisma.DishGetPayload<{
+  include: { Dish_Product: { include: { product: true } } };
+}>;

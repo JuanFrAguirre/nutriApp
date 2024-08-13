@@ -1,36 +1,73 @@
 'use client';
 
 import { postProduct } from '@/actions';
-import { INITIAL_STATE, useNewProductStore } from '@/store/new-product-store';
-import _ from 'lodash';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { redirect } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { CgSpinner } from 'react-icons/cg';
 
-export const CreateProductForm = () => {
-  const clearNewProduct = useNewProductStore((store) => store.clearNewProduct);
-  const setNewProduct = useNewProductStore((store) => store.setNewProduct);
-  const newProduct = useNewProductStore((store) => store.newProduct);
+export const ALLOWED_IMAGE_SOURCES = [
+  'prod-mercadona.imgix.net',
+  'static.carrefour.es',
+  'www.compraonline.alcampo.es',
+];
 
-  const router = useRouter();
+interface FormInputs {
+  title: string;
+  tags: string;
+  image: string;
+  presentationSize: number;
+  calories: number;
+  proteins: number;
+  carbohydrates: number;
+  fats: number;
+}
+
+export const CreateProductForm = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { isValid, isDirty },
+    reset,
+  } = useForm<FormInputs>({
+    defaultValues: {
+      title: '',
+      tags: '',
+      image: '',
+      presentationSize: undefined,
+      calories: undefined,
+      proteins: undefined,
+      carbohydrates: undefined,
+      fats: undefined,
+    },
+  });
 
   const [loading, setLoading] = useState(true);
 
-  const updateNewProduct = useCallback(
-    (field: string, value: string) =>
-      setNewProduct({ ...newProduct, [field]: value.trim() }),
-    [newProduct, setNewProduct],
-  );
-
-  const handleNewProductCreation = useCallback(async () => {
-    const product = await postProduct(newProduct);
-    router.push('/products');
-  }, [newProduct, router]);
-
-  const isFormClean = useMemo(
-    () => _.isEqual(newProduct, INITIAL_STATE),
-    [newProduct],
-  );
+  const handleNewProductCreation = useCallback(async (data: FormInputs) => {
+    const {
+      title,
+      tags,
+      image,
+      presentationSize,
+      calories,
+      proteins,
+      carbohydrates,
+      fats,
+    } = data;
+    const newProduct = await postProduct({
+      title,
+      tags,
+      image: ALLOWED_IMAGE_SOURCES.includes(image) ? image : '',
+      presentationSize: Number(presentationSize),
+      calories: Number(calories),
+      proteins: Number(proteins),
+      carbohydrates: Number(carbohydrates),
+      fats: Number(fats),
+    });
+    window.location.href = `/products#${newProduct?.data?.id}`;
+  }, []);
+  // }, []);
 
   useEffect(() => {
     setLoading(false);
@@ -45,7 +82,10 @@ export const CreateProductForm = () => {
     );
 
   return (
-    <form className="flex flex-col gap-10 w-full px-4 grow max-w-7xl mx-auto">
+    <form
+      className="flex flex-col gap-10 w-full px-4 grow max-w-7xl mx-auto"
+      onSubmit={handleSubmit(handleNewProductCreation)}
+    >
       <div className="flex flex-col gap-2">
         <label className="font-semibold" htmlFor="title">
           Título *
@@ -55,8 +95,7 @@ export const CreateProductForm = () => {
           className="input"
           placeholder="Arroz"
           id="title"
-          value={newProduct.title}
-          onChange={(e) => updateNewProduct('title', e.target.value)}
+          {...register('title', { required: true })}
         />
       </div>
 
@@ -69,8 +108,7 @@ export const CreateProductForm = () => {
           className="input"
           placeholder="https://sitio-de-la-image.com/123"
           id="image"
-          value={newProduct.image}
-          onChange={(e) => updateNewProduct('image', e.target.value)}
+          {...register('image')}
         />
       </div>
 
@@ -83,28 +121,29 @@ export const CreateProductForm = () => {
           className="input"
           placeholder="arroz,mercadona,congelado"
           id="tags"
-          value={newProduct.tags}
-          onChange={(e) => updateNewProduct('tags', e.target.value)}
+          {...register('tags')}
         />
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <label className="font-semibold" htmlFor="presentationSize">
-          Tamaño por unidad *
+          Tamaño por unidad *<br />
+          <small>(en gramos)</small>
         </label>
         <input
           type="number"
           className="input"
           placeholder="120g"
           id="presentationSize"
-          value={newProduct.presentationSize}
-          onChange={(e) => updateNewProduct('presentationSize', e.target.value)}
+          step={0.01}
+          {...register('presentationSize', { required: true })}
         />
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         <p className="font-semibold">
           Información nutricional
+          <br />
           <small> (cada 100g)</small>
         </p>
         <div className="grid grid-cols-2 gap-4">
@@ -117,8 +156,8 @@ export const CreateProductForm = () => {
               className="input"
               placeholder="123kcal"
               id="calories"
-              value={newProduct.calories}
-              onChange={(e) => updateNewProduct('calories', e.target.value)}
+              step={0.01}
+              {...register('calories', { required: true })}
             />
           </div>
 
@@ -129,10 +168,10 @@ export const CreateProductForm = () => {
             <input
               type="number"
               className="input"
-              placeholder="34g"
+              placeholder="50g"
               id="proteins"
-              value={newProduct.proteins}
-              onChange={(e) => updateNewProduct('proteins', e.target.value)}
+              step={0.01}
+              {...register('proteins', { required: true })}
             />
           </div>
         </div>
@@ -146,10 +185,10 @@ export const CreateProductForm = () => {
           <input
             type="number"
             className="input"
-            placeholder="34g"
+            placeholder="25g"
             id="carbohydrates"
-            value={newProduct.carbohydrates}
-            onChange={(e) => updateNewProduct('carbohydrates', e.target.value)}
+            step={0.01}
+            {...register('carbohydrates', { required: true })}
           />
         </div>
 
@@ -160,47 +199,27 @@ export const CreateProductForm = () => {
           <input
             type="number"
             className="input"
-            placeholder="34g"
+            placeholder="10g"
             id="fats"
-            value={newProduct.fats}
-            onChange={(e) => updateNewProduct('fats', e.target.value)}
+            step={0.01}
+            {...register('fats', { required: true })}
           />
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-2 gap-4"> */}
-
-      {/* <div className="flex flex-col gap-2">
-          <label className="font-semibold" htmlFor="unitType">
-            Tipo de unidad
-          </label>
-          <select
-            id="unitType"
-            className="input"
-            value={newProduct.unitType}
-            onChange={(e) => updateNewProduct('unitType', e.target.value)}
-          >
-            <option value="relative">Relativa</option>
-            <option value="absolute">Absoluta</option>
-          </select>
-        </div> */}
-      {/* </div> */}
-
       <div className="grow"></div>
       <div className="grid grid-cols-2 items-center gap-4">
         <button
-          disabled={isFormClean}
-          className={isFormClean ? 'btn-disabled' : 'btn-danger'}
-          onClick={clearNewProduct}
+          disabled={!isDirty}
+          className={!isDirty ? 'btn-disabled' : 'btn-danger'}
+          onClick={() => reset()}
           type="button"
         >
           Limpiar
         </button>
         <button
-          disabled={isFormClean}
-          className={isFormClean ? 'btn-disabled' : 'btn'}
-          onClick={handleNewProductCreation}
-          type="button"
+          disabled={!isDirty || !isValid}
+          className={!isDirty || !isValid ? 'btn-disabled' : 'btn'}
         >
           Crear
         </button>
