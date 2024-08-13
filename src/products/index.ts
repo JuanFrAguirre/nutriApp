@@ -1,3 +1,4 @@
 export * from './CreateProductForm';
-export * from './Product';
+export * from './DeleteProductButton';
 export * from './OpenCalculatorButton';
+export * from './Product';

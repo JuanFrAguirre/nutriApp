@@ -17,7 +17,7 @@ export const TopMenu = () => {
     <nav>
       <button
         onClick={closeMenu}
-        className="fixed flex items-center justify-center p-2 rounded-full shadow-lg shadow-green-700/75 bg-gradient-radial from-green-600 to-green-500 bottom-10 right-5 btn-primary z-90"
+        className="fixed flex items-center justify-center p-2 rounded-l-[18px] rounded-r-none shadow shadow-green-700/75 max-md:bottom-10 md:top-10 right-0 btn-primary z-90 fade-in transition-all pr-4 border border-green-600"
       >
         <IoMenuOutline size={30} />
       </button>

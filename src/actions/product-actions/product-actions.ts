@@ -1,6 +1,6 @@
 'use server';
 
-import { DishProduct, Product } from '@/interfaces/interfaces';
+import { DishProduct } from '@/interfaces/interfaces';
 import prisma from '@/lib/prisma';
 
 export const getProducts = async () => {
@@ -21,6 +21,18 @@ export const getProductById = async (id: string) => {
     return product as DishProduct;
   } catch (error) {
     console.error(error);
+    return {} as DishProduct;
+  }
+};
+
+export const deleteProductById = async (id: string) => {
+  try {
+    await prisma.product.delete({ where: { id } });
+
+    return { ok: true, message: 'Product deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: 'Error deleting product' };
   }
 };
 

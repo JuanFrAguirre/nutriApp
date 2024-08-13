@@ -21,14 +21,31 @@ export const useCalculatorStore = create<State>()(
         );
 
         if (!productIsInCalculator) {
-          set({ products: [...calcProducts, product] });
+          set({
+            products: [
+              ...calcProducts,
+              {
+                ...product,
+                unitType: product.unitType ?? 'relative',
+                portionWeight:
+                  product.portionWeight ?? product.presentationSize,
+              },
+            ],
+          });
           return;
         }
       },
       editProductFromCalculator: (product) => {
         const { products: calcProducts } = get();
         const updatedCalcProducts = calcProducts.map((item) =>
-          item.id === product.id ? product : item,
+          item.id === product.id
+            ? {
+                ...product,
+                unitType: product.unitType ?? 'relative',
+                portionWeight:
+                  product.portionWeight ?? product.presentationSize,
+              }
+            : item,
         );
         set({ products: updatedCalcProducts });
       },
