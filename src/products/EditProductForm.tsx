@@ -55,7 +55,7 @@ export const EditProductForm = ({ product }: Props) => {
         ...product,
         title,
         tags,
-        image: ALLOWED_IMAGE_SOURCES.includes(image) ? image : '',
+        image: image && ALLOWED_IMAGE_SOURCES.includes(image) ? image : '',
         presentationSize: Number(presentationSize),
         calories: Number(calories),
         proteins: Number(proteins),
