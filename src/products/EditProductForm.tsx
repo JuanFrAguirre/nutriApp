@@ -16,8 +16,8 @@ interface Props {
 
 interface FormInputs {
   title: string;
-  tags: string;
-  image: string;
+  tags?: string | null;
+  image?: string | null;
   presentationSize: number;
   calories: number;
   proteins: number;
