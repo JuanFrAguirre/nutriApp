@@ -15,7 +15,7 @@ export default async function ProfilePage() {
   if (!session) redirect('/');
 
   return (
-    <main className="flex grow justify-center items-start gap-6 my-32 max-sm:flex-col max-sm:items-center max-sm:my-0">
+    <main className="flex grow gap-10 my-32 flex-col sm:flex-row items-center justify-center">
       <Image
         alt={name!}
         src={image!}
@@ -25,22 +25,26 @@ export default async function ProfilePage() {
       />
       <div className="space-y-6">
         <p className="text-lg">
-          <span className="text-secondary">Nombre</span>
+          <span className="text-secondary font-semibold">Nombre</span>
           <br />
           {name}
         </p>
         <p className="text-lg">
-          <span className="text-secondary">Correo electrónico</span>
+          <span className="text-secondary font-semibold">
+            Correo electrónico
+          </span>
           <br />
           {email}
         </p>
         <p className="text-lg">
-          <span className="text-secondary">Comidas guardadas</span>
+          <span className="text-secondary font-semibold">
+            Comidas guardadas
+          </span>
           <br />
           {dishes.length}
         </p>
         <p className="text-lg">
-          <span className="text-secondary">Días trackeados</span>
+          <span className="text-secondary font-semibold">Días trackeados</span>
           <br />
           {entries.length}
         </p>

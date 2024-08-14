@@ -3,6 +3,7 @@ import { createDish } from '@/actions';
 import { Product } from '@/products';
 import { useCalculatorStore } from '@/store/calculator-store';
 import { useConfirmationStore } from '@/store/confirmation-store';
+import { customRound } from '@/utils';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -47,14 +48,16 @@ export default function CalculatorPage() {
     });
 
     clearCalculator();
-    window.location.href = `/dishes#${newDish.dish?.id}`;
+    setTimeout(() => {
+      window.location.href = `/dishes`;
+    }, 200);
   }, [products, session, openConfirmationAsync, clearCalculator]);
 
   const getRenderableValue = useCallback(
     (value: 'calories' | 'proteins' | 'fats' | 'carbohydrates') => {
       if (!products) return 0;
-      return products
-        .reduce(
+      return customRound(
+        products.reduce(
           (acc, curr) =>
             acc +
             curr[value] *
@@ -63,11 +66,8 @@ export default function CalculatorPage() {
                 : curr.presentationSize) *
               0.01,
           0,
-        )
-        .toLocaleString('es-AR', {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        });
+        ),
+      );
     },
     [products],
   );
@@ -109,7 +109,7 @@ export default function CalculatorPage() {
       )}
 
       {/* Summary mobile */}
-      <div className="fixed bg-white drop-shadow-2xl rounded-tr-[75px] border-stone-200 right-20 left-0 bottom-0 p-4 md:hidden space-y-2">
+      <div className="fixed bg-white shadow-2xl shadow-black rounded-tr-[75px] border border-stone-400 right-20 left-0 bottom-0 p-4 md:hidden space-y-2">
         <p className="font-semibold text-secondary">Totales</p>
         <div className="grid grid-cols-10 gap-2 justify-items-left">
           <div className="col-span-4">
@@ -170,7 +170,7 @@ export default function CalculatorPage() {
       </div>
 
       {/* Summary desktop */}
-      <div className="max-md:hidden bg-white max-w-3xl mx-auto fixed bottom-0 w-full p-10 rounded-t-xl drop-shadow-xl border border-stone-100">
+      <div className="max-md:hidden bg-white max-w-3xl mx-auto fixed bottom-0 w-full p-10 rounded-t-xl shadow-2xl shadow-black border border-stone-400">
         <div className="flex">
           <div className="grow grid grid-cols-2 justify-items-center">
             <div className="flex flex-col justify-between">
@@ -209,7 +209,7 @@ export default function CalculatorPage() {
           <div className="col-span-4 flex flex-col gap-5 justify-center px-4">
             <button
               disabled={!products.length}
-              onClick={clearCalculator}
+              onClick={handleCreateDish}
               className={clsx(
                 'flex justify-center items-center gap-2 p-4',
                 products.length ? 'btn-primary' : 'btn-disabled',

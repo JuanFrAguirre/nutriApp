@@ -16,6 +16,7 @@ import { HiPencilSquare } from 'react-icons/hi2';
 import { IoAddOutline, IoCheckmarkOutline } from 'react-icons/io5';
 import { LiaTrashAlt } from 'react-icons/lia';
 import NO_IMAGE from '../../public/No_Image_Available.jpg';
+import { renderSelectedNutritionalValueFromProduct } from '@/utils';
 
 interface Props {
   product: DishProduct;
@@ -236,7 +237,10 @@ export const Product = ({
               Calorías
               <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
-                {(calcProduct.calories * portionWeight * 0.01).toFixed(2)}
+                {renderSelectedNutritionalValueFromProduct(
+                  'calories',
+                  calcProduct,
+                )}
                 kcal
               </span>
             </p>
@@ -244,21 +248,30 @@ export const Product = ({
               Proteínas
               <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
-                {(calcProduct.proteins * portionWeight * 0.01).toFixed(2)}g
+                {renderSelectedNutritionalValueFromProduct(
+                  'proteins',
+                  calcProduct,
+                )}
+                g
               </span>
             </p>
             <p className="flex justify-between">
               Carbos
               <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
-                {(calcProduct.carbohydrates * portionWeight * 0.01).toFixed(2)}g
+                {renderSelectedNutritionalValueFromProduct(
+                  'carbohydrates',
+                  calcProduct,
+                )}
+                g
               </span>
             </p>
             <p className="flex justify-between">
               Grasas
               <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
               <span className="text-secondary">
-                {(calcProduct.fats * portionWeight * 0.01).toFixed(2)}g
+                {renderSelectedNutritionalValueFromProduct('fats', calcProduct)}
+                g
               </span>
             </p>
           </div>

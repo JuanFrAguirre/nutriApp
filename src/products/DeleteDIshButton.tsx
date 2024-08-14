@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteProductById } from '@/actions';
+import { deleteDishById } from '@/actions';
 import { useConfirmationStore } from '@/store/confirmation-store';
 import { LiaTrashAlt } from 'react-icons/lia';
 
@@ -8,15 +8,15 @@ interface Props {
   id: string;
 }
 
-export const DeleteProductButton = ({ id }: Props) => {
+export const DeleteDishButton = ({ id }: Props) => {
   const { openConfirmation } = useConfirmationStore();
 
   const confirmDelete = () => {
     openConfirmation(
-      'Eliminar este producto?',
-      async (text) => {
-        await deleteProductById(id);
-        window.location.href = '/products';
+      'Eliminar esta comida?',
+      async () => {
+        await deleteDishById(id);
+        window.location.href = '/dishes';
       },
       false,
     );
@@ -29,7 +29,7 @@ export const DeleteProductButton = ({ id }: Props) => {
       type="button"
     >
       <LiaTrashAlt size={30} />
-      <p className="ml-2 max-md:hidden">Eliminar producto</p>
+      <p className="ml-2 max-md:hidden">Eliminar comida</p>
     </button>
   );
 };

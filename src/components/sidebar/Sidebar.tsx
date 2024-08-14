@@ -115,13 +115,13 @@ export const Sidebar = () => {
     <div className="">
       {/* Black background */}
       {isSideMenuOpen && (
-        <div className="fixed top-0 left-0 z-10 w-screen h-screen bg-gradient-to-b to-black/30  from-white/30"></div>
+        <div className="fixed top-0 left-0 z-20 w-screen h-screen bg-black/35"></div>
       )}
 
       {/* Blur */}
       {isSideMenuOpen && (
         <div
-          className="fixed top-0 left-0 z-10 w-screen h-screen transition-all fade-in backdrop-filter backdrop-blur-[3px]"
+          className="fixed top-0 left-0 z-20 w-screen h-screen transition-all fade-in backdrop-filter backdrop-blur-[3px]"
           onClick={closeMenu}
         ></div>
       )}
@@ -129,29 +129,31 @@ export const Sidebar = () => {
       {/* Sidemenu */}
       <nav
         className={clsx(
-          'fixed py-5 right-0 bottom-0 max-md:bottom-2 max-md:right-2 max-md:w-auto md:w-[500px] max-md:h-auto h-screen bg-gradient-to-b from-white to-green-50 z-20 shadow-2xl transform transition-all duration-300 max-md:rounded-xl overflow-y-auto',
+          'fixed max-md:py-5 right-0 bottom-0 max-md:bottom-2 max-md:right-2 max-md:w-auto md:w-[500px] max-md:h-auto h-screen bg-gradient-to-b from-white max-md:to-green-100  md:via-white md:to-black/20 z-20 shadow-2xl transform transition-all duration-300 max-md:rounded-xl overflow-y-auto',
           {
-            'translate-x-full max-md:translate-x-[120%] max-md:translate-y-[25%] ':
+            'translate-x-full max-md:translate-x-[100vw] -right-10 max-md:translate-y-[25%] ':
               !isSideMenuOpen,
           },
         )}
       >
         {!isAuthenticated ? null : (
-          <h2 className="text-2xl p-2 mb-3 font-semibold text-primary text-center">
+          <h2 className="text-2xl p-2 max-md:mb-3 md:mb-px md:h-20 md:flex items-center justify-center font-semibold text-primary text-center ">
             Hola, {session?.user?.name?.split(' ')[0]}!
           </h2>
         )}
         <div className="flex flex-col gap-px">
-          {links.map((link) =>
+          {links.map((link, i) =>
             link.type === 'link' ? (
               <Link
                 key={link.text}
                 href={link.href || ''}
                 className={clsx(
-                  'py-3 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
-                  pathname === link.href && 'text-white bg-secondary group',
+                  'py-3 px-5 flex gap-4 hover:text-white hover:bg-gradient-to-r from-secondary to-primary transition-all duration-500 transform',
+                  pathname === link.href &&
+                    'text-white bg-gradient-to-r from-secondary to-primary',
                 )}
                 onClick={link.onClick}
+                tabIndex={!isSideMenuOpen ? -1 : undefined}
               >
                 {link.icon}
                 <p className="text-xl">{link.text}</p>
@@ -163,6 +165,7 @@ export const Sidebar = () => {
                   'p-2 px-5 flex gap-4 hover:text-white hover:bg-secondary transition-all',
                 )}
                 onClick={link.onClick}
+                disabled={!isSideMenuOpen}
               >
                 {link.icon}
                 <p className="text-xl">{link.text}</p>

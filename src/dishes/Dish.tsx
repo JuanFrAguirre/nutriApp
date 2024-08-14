@@ -1,5 +1,5 @@
 import { DishWithProducts } from '@/interfaces/interfaces';
-import { DEFAULT_IMAGE } from '@/utils';
+import { DEFAULT_IMAGE, renderSelectedNutritionalValueFromDish } from '@/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useCallback } from 'react';
@@ -11,18 +11,6 @@ interface Props {
 }
 
 export const Dish = ({ dish, className }: Props) => {
-  const renderSelectedNutritionalValue = (
-    value: 'calories' | 'proteins' | 'carbohydrates' | 'fats',
-  ) => {
-    return dish.Dish_Product.reduce(
-      (acc, curr) => acc + curr.product[value] * curr.portionWeight * 0.01,
-      0,
-    ).toLocaleString('es-ar', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: value === 'calories' ? 0 : 2,
-    });
-  };
-
   return (
     <article
       className={clsx(
@@ -42,7 +30,7 @@ export const Dish = ({ dish, className }: Props) => {
           {dish.title}
         </p>
       </div>
-      <div className="auto-rows-min grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 place-items-center overflow-y-auto grow px-3 border-t border-stone-200 py-2 sm:py-3">
+      <div className="auto-rows-min grid grid-cols-2 sm:grid-cols-3 gap-2 place-items-center overflow-y-auto grow px-3 border-t border-stone-200 py-2 sm:py-3">
         {dish.Dish_Product.map((dishProduct) => (
           <Image
             className="border-stone-100 rounded-xl border shadow"
@@ -55,36 +43,36 @@ export const Dish = ({ dish, className }: Props) => {
         ))}
       </div>
 
-      <div className="px-4 grid sm:grid-cols-2 sm:justify-items-center gap-0 sm:gap-2 border-t border-stone-200 py-2 sm:py-2">
+      {/* <div className="px-4 grid sm:grid-cols-2 sm:justify-items-center gap-0 sm:gap-2 border-t border-stone-200 py-2 sm:py-2 text-center">
         <p className="max-sm:flex justify-between">
           Calorías <br />
           <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
           <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValue('calories')}kcal
+            {renderSelectedNutritionalValueFromDish('calories', dish)}kcal
           </span>
         </p>
         <p className="max-sm:flex justify-between">
           Proteínas <br />
           <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
           <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValue('proteins')}g
+            {renderSelectedNutritionalValueFromDish('proteins', dish)}g
           </span>
         </p>
         <p className="max-sm:flex justify-between">
           Carbos <br />
           <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
           <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValue('carbohydrates')}g
+            {renderSelectedNutritionalValueFromDish('carbohydrates', dish)}g
           </span>
         </p>
         <p className="max-sm:flex justify-between">
           Grasas <br />
           <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
           <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValue('fats')}g
+            {renderSelectedNutritionalValueFromDish('fats', dish)}g
           </span>
         </p>
-      </div>
+      </div> */}
     </article>
   );
 };

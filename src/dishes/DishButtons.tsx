@@ -45,11 +45,14 @@ export const DishButtons = ({ dish }: Props) => {
   return (
     <>
       <button
-        className="rounded-xl p-0.5 md:px-2 py-2.5 md:py-3.5 grid place-items-center"
+        className="rounded-xl p-0.5 md:px-2 py-2.5 md:py-3.5 grid place-items-center group"
         onClick={toggleMenu}
         type="button"
       >
-        <HiDotsVertical size={20} className="" />
+        <HiDotsVertical
+          size={20}
+          className="text-secondary transform transition group-hover:scale-[1.1]"
+        />
       </button>
       <>
         <div
@@ -74,21 +77,21 @@ export const DishButtons = ({ dish }: Props) => {
         >
           <Link
             href={`/dishes/${dish.id}`}
-            className="p-1 px-3 block hover:bg-secondary hover:text-white transition-all rounded"
+            className="p-1 px-3 block hover:text-primary origin-center transition-all rounded"
           >
-            Ver más
+            <p>Ver más</p>
           </Link>
-          <Link
+          {/* <Link
             href={`/dishes/${dish.id}/edit`}
-            className="p-1 px-3 block hover:bg-secondary hover:text-white transition-all rounded"
+            className="p-1 px-3 block hover:text-primary origin-center transition-all rounded"
           >
-            Editar
-          </Link>
+            <p>Editar</p>
+          </Link> */}
           <button
-            className="p-1 px-3 block hover:bg-secondary hover:text-white transition-all rounded text-left"
+            className="p-1 px-3 block hover:text-primary origin-center transition-all rounded text-left"
             onClick={handleDelete}
           >
-            Eliminar
+            <p>Eliminar</p>
           </button>
         </div>
       </>

@@ -14,7 +14,19 @@ export const getDishes = async () => {
     return [];
   }
 };
-export const getDishById = async () => {};
+export const getDishById = async (dishId: string) => {
+  try {
+    const dish = await prisma.dish.findFirst({
+      where: { id: dishId },
+      include: { Dish_Product: { include: { product: true } } },
+    });
+
+    return dish;
+  } catch (error) {
+    console.error(error);
+    return {} as DishWithProducts;
+  }
+};
 
 export const deleteDishById = async (dishId: string) => {
   try {

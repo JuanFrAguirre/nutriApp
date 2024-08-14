@@ -3,8 +3,8 @@ import { Prisma } from '@prisma/client';
 export interface Product {
   id?: string;
   title: string;
-  tags?: string;
-  image?: string;
+  tags?: string | null;
+  image?: string | null;
   calories: number;
   proteins: number;
   carbohydrates: number;
