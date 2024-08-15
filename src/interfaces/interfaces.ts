@@ -26,3 +26,13 @@ export type DishProductWithProducts = Prisma.Dish_ProductGetPayload<{
 export type DishWithProducts = Prisma.DishGetPayload<{
   include: { Dish_Product: { include: { product: true } } };
 }>;
+
+export type CalendarEntryWithAllData = Prisma.CalendarEntryGetPayload<{
+  include: {
+    Entry_Dish: {
+      include: {
+        Dish: { include: { Dish_Product: { include: { product: true } } } };
+      };
+    };
+  };
+}>;

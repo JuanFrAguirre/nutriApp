@@ -10,10 +10,11 @@ export const getDishes = async () => {
     });
     return dishes;
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return [];
   }
 };
+
 export const getDishById = async (dishId: string) => {
   try {
     const dish = await prisma.dish.findFirst({
@@ -23,7 +24,7 @@ export const getDishById = async (dishId: string) => {
 
     return dish;
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return {} as DishWithProducts;
   }
 };
@@ -35,7 +36,7 @@ export const deleteDishById = async (dishId: string) => {
 
     return { ok: true, message: 'Dish deleted successfully' };
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return { ok: false, message: 'Error deleting this dish' };
   }
 };
@@ -68,8 +69,9 @@ export const createDish = async ({
 
     return { ok: true, dish, dishProducts };
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return { ok: false, message: 'There was an error creating the dish' };
   }
 };
+
 export const editDish = async () => {};

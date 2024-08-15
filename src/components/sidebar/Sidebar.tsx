@@ -35,6 +35,20 @@ export const Sidebar = () => {
   const links = useMemo(
     () => [
       {
+        text: 'Registros',
+        href: '/calendar',
+        onClick: () => closeMenu(),
+        icon: <IoCalendarOutline size={25} />,
+        type: 'link',
+      },
+      {
+        text: 'Comidas',
+        href: '/dishes',
+        onClick: () => closeMenu(),
+        icon: <IoRestaurantOutline size={25} />,
+        type: 'link',
+      },
+      {
         text: 'Productos',
         href: '/products',
         onClick: () => closeMenu(),
@@ -57,41 +71,13 @@ export const Sidebar = () => {
         type: 'link',
       },
       {
-        text: 'Comidas',
-        href: '/dishes',
-        onClick: () => closeMenu(),
-        icon: <IoRestaurantOutline size={25} />,
-        type: 'link',
-      },
-      // {
-      //   text: 'Agregar una comida',
-      //   href: '/dishes/new',
-      //   onClick: () => closeMenu(),
-      //   icon: (
-      //     <div className="relative w-[25px]">
-      //       <IoRestaurantOutline size={25} className="absolute" />
-      //       <IoAddCircleOutline
-      //         className="absolute -top-2 -right-2"
-      //         size={15}
-      //       />
-      //     </div>
-      //   ),
-      //   type: 'link',
-      // },
-      {
         text: 'Calculadora',
         href: '/calculator',
         onClick: () => closeMenu(),
         icon: <IoCalculatorOutline size={25} />,
         type: 'link',
       },
-      {
-        text: 'Registros',
-        href: '/calendar',
-        onClick: () => closeMenu(),
-        icon: <IoCalendarOutline size={25} />,
-        type: 'link',
-      },
+
       {
         text: 'Perfil',
         href: '/profile',

@@ -1,15 +1,16 @@
-export default async function DishesPage() {
-  // const dishes = await getDishes();
+import { getCalendarEntries } from '@/actions';
+import { CalendarEntry } from '@/calendar/CalendarEntry';
+import { CalendarEntryWithAllData } from '@/interfaces/interfaces';
+import { isSameDay } from '@/utils';
+
+export default async function CalendarPage() {
+  const entries = await getCalendarEntries();
 
   return (
-    <main className="flex grow justify-center items-center flex-col gap-10 mb-32 mt-10">
+    <main className="flex grow justify-center items-center flex-col gap-10 mb-32 mt-10 max-w-7xl mx-auto">
       <h1 className="text-3xl font-semibold text-secondary">Tus registros</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 justify-between max-w-7xl max-sm:px-2 px-4 w-full">
-        {/* {dishes.map((dish) => (
-          <Dish key={dish.id} dish={dish} className="basis-[49%]" />
-        ))} */}
-      </div>
-      <div className="grow"></div>
+
+      {<CalendarEntry entries={entries} />}
     </main>
   );
 }

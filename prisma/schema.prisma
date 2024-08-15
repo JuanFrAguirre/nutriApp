@@ -111,7 +111,7 @@ model Dish {
 
 model Entry_Dish {
   id       String @id @default(uuid())
-  quantity String
+  quantity Int
 
   userEmail String
   user      User   @relation(fields: [userEmail], references: [email])

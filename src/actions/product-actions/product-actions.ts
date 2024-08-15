@@ -9,7 +9,7 @@ export const getProducts = async () => {
 
     return products as DishProduct[];
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return [];
   }
 };
@@ -20,7 +20,7 @@ export const getProductById = async (id: string) => {
 
     return product as DishProduct;
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return {} as DishProduct;
   }
 };
@@ -31,7 +31,7 @@ export const deleteProductById = async (id: string) => {
 
     return { ok: true, message: 'Product deleted successfully' };
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return { ok: false, message: 'Error deleting product' };
   }
 };
@@ -46,7 +46,7 @@ export const postProduct = async (product: DishProduct) => {
       message: 'Product created successfully',
     };
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return { ok: false, message: 'Error creating a product' };
   }
 };
@@ -64,7 +64,7 @@ export const editProduct = async (product: DishProduct) => {
       message: 'Product created successfully',
     };
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return { ok: false, message: 'Error updating the product' };
   }
 };
