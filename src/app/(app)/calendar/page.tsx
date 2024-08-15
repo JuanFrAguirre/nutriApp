@@ -1,5 +1,5 @@
 import { getCalendarEntries } from '@/actions';
-import { CalendarEntry } from '@/calendar/CalendarEntry';
+import { CalendarEntry } from '@/calendar';
 import { CalendarEntryWithAllData } from '@/interfaces/interfaces';
 import { isSameDay } from '@/utils';
 

@@ -196,9 +196,9 @@ export const TopMenu = () => {
       >
         <IoMenuOutline size={30} />
       </button>
-      {!['/calculator', '/products/new', '/dishes/new'].includes(pathname) && (
-        <OpenCalculatorButton />
-      )}
+      {!['/calculator', '/products/new', '/dishes/new', '/dishes'].includes(
+        pathname,
+      ) && <OpenCalculatorButton />}
     </div>
   );
 };

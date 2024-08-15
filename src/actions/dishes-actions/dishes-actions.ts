@@ -1,12 +1,15 @@
 'use server';
+import { auth } from '@/auth';
 import { DishProduct, DishWithProducts } from '@/interfaces/interfaces';
 import prisma from '@/lib/prisma';
 
 export const getDishes = async () => {
+  const session = await auth();
+
   try {
     const dishes = await prisma.dish.findMany({
       include: { Dish_Product: { include: { product: true } } },
-      where: { userEmail: 'juanfranciscoaguirre95@gmail.com' },
+      where: { userEmail: session?.user?.email! },
     });
     return dishes;
   } catch (error) {

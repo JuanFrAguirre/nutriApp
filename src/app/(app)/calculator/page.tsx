@@ -47,10 +47,10 @@ export default function CalculatorPage() {
       userEmail: session.data?.user?.email!,
     });
 
-    clearCalculator();
     setTimeout(() => {
+      clearCalculator();
       window.location.href = `/dishes`;
-    }, 200);
+    }, 1000);
   }, [products, session, openConfirmationAsync, clearCalculator]);
 
   const getRenderableValue = useCallback(

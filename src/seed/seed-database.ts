@@ -1,10 +1,20 @@
 import prisma from '../lib/prisma';
-import { seedProducts } from './seed-data';
+import {
+  seedCalendarEntries,
+  seedDishes,
+  seedDishProducts,
+  seedEntryDishes,
+  seedProducts,
+} from './seed-data';
 
 const main = async () => {
   try {
-    await prisma.user.deleteMany();
+    await prisma.entry_Dish.deleteMany();
+    await prisma.dish_Product.deleteMany();
+    await prisma.calendarEntry.deleteMany();
+    await prisma.dish.deleteMany();
     await prisma.product.deleteMany();
+    await prisma.user.deleteMany();
 
     await prisma.user.create({
       data: {
@@ -14,6 +24,17 @@ const main = async () => {
     });
 
     await prisma.product.createMany({ data: seedProducts });
+    await prisma.dish.createMany({ data: seedDishes });
+    await prisma.dish_Product.createMany({
+      data: seedDishProducts,
+    });
+
+    await prisma.calendarEntry.createMany({
+      data: seedCalendarEntries,
+    });
+    await prisma.entry_Dish.createMany({
+      data: seedEntryDishes,
+    });
 
     console.log('seed ok!');
   } catch (error) {

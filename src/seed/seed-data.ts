@@ -1,4 +1,9 @@
-import { DishProduct, DishWithProducts } from '../interfaces/interfaces';
+import { Dish } from '@prisma/client';
+import {
+  DishProduct,
+  DishProductDB,
+  DishWithProducts,
+} from '../interfaces/interfaces';
 
 export const seedProducts: DishProduct[] = [
   {
@@ -254,4 +259,120 @@ export const seedProducts: DishProduct[] = [
   },
 ];
 
-export const seedDishes: DishWithProducts[] = [];
+export const seedDishes = [
+  {
+    id: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
+    title: 'Arroz con tomate',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: '5fac6383-a2b9-4f45-9a0e-e9ea9e621a53',
+    title: 'Arroz con pollo, verduras y huevo',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+];
+
+export const seedDishProducts: DishProductDB[] = [
+  {
+    id: 'a65b2266-5ab0-4727-aa45-d2dfe59fc98e',
+    dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
+    portionWeight: 166.66,
+    unitType: 'relative',
+    productId: 'a8a48e93-83b7-450b-a2bf-9d8a11b56793',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: '69cf4542-9a05-40a5-a75a-545c0a51af3c',
+    dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
+    portionWeight: 15,
+    unitType: 'relative',
+    productId: '99bb1ba7-622a-40e5-a30a-04787ce3f8f3',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: 'dfc73eab-90b4-4866-86b5-d5fd1bf77777',
+    dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
+    portionWeight: 120,
+    unitType: 'relative',
+    productId: '2ece6a8e-dc41-467b-8321-bd345dacfb04',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: 'b09770a7-900f-4d79-886e-57645050d7a4',
+    dishId: '5fac6383-a2b9-4f45-9a0e-e9ea9e621a53',
+    portionWeight: 166.66,
+    unitType: 'relative',
+    productId: 'a8a48e93-83b7-450b-a2bf-9d8a11b56793',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: '0176c61f-cfd7-47f7-85d7-5dbb2356d22f',
+    dishId: '5fac6383-a2b9-4f45-9a0e-e9ea9e621a53',
+    portionWeight: 150,
+    unitType: 'relative',
+    productId: '436aecf4-97a8-4c04-a7be-569ddfc16268',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: '5872b6b9-6d4b-4f48-a6d5-2161e81a6b71',
+    dishId: '5fac6383-a2b9-4f45-9a0e-e9ea9e621a53',
+    portionWeight: 180,
+    unitType: 'relative',
+    productId: '25eaf02e-acfa-4071-8dca-2e7ab8f1f32c',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+];
+
+export const seedCalendarEntries = [
+  {
+    id: 'd1856f6a-04bd-4f04-a881-f8ce31dc1cb5',
+    date: '2024-08-15T17:26:07.651Z',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: 'f25b7567-7a2d-478e-8cf9-3116d6f0e4b5',
+    date: '2024-08-15T18:23:07.430Z',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: '76af70bf-731c-4f10-b982-2dd58d5a0e3f',
+    date: '2024-08-16T17:26:07.651Z',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+  {
+    id: '114d0e17-b0fb-4b71-8f15-3ecd9080437d',
+    date: '2024-08-14T18:23:07.430Z',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+  },
+];
+
+export const seedEntryDishes = [
+  {
+    id: '5fdbf3b4-2c62-4b4c-a1ff-10212daea33c',
+    dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
+    calendarEntryId: 'd1856f6a-04bd-4f04-a881-f8ce31dc1cb5',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+    quantity: 1,
+  },
+  {
+    id: '14418ace-60c4-4082-a0e3-320bd065710e',
+    dishId: '5fac6383-a2b9-4f45-9a0e-e9ea9e621a53',
+    calendarEntryId: 'f25b7567-7a2d-478e-8cf9-3116d6f0e4b5',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+    quantity: 1,
+  },
+  {
+    id: 'a5021a78-c449-4349-969a-118631f069cd',
+    dishId: '5fac6383-a2b9-4f45-9a0e-e9ea9e621a53',
+    calendarEntryId: '76af70bf-731c-4f10-b982-2dd58d5a0e3f',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+    quantity: 1,
+  },
+  {
+    id: '2c7b0b3f-fe12-4a60-99f7-612cbb3e5124',
+    dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
+    calendarEntryId: '114d0e17-b0fb-4b71-8f15-3ecd9080437d',
+    userEmail: 'juanfranciscoaguirre95@gmail.com',
+    quantity: 1,
+  },
+];

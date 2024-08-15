@@ -19,6 +19,15 @@ export interface DishProduct extends Product {
   portionWeight?: number;
 }
 
+export interface DishProductDB {
+  id?: string;
+  dishId: string;
+  productId: string;
+  userEmail: string;
+  portionWeight: number;
+  unitType: UnitTypes;
+}
+
 export type DishProductWithProducts = Prisma.Dish_ProductGetPayload<{
   include: { product: true };
 }>;
