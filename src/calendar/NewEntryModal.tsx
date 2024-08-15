@@ -65,9 +65,11 @@ export const NewEntryModal = ({
 
   const onEntrySubmit = async (data: FormInputs) => {
     const { date, quantity } = data;
-
-    // let newEntry = await createCalendarEntry(selectedDish.id, date, quantity);
-    let newEntry = await createCalendarEntry();
+    let newEntry = await createCalendarEntry(
+      selectedDish.id,
+      date,
+      Number(quantity),
+    );
     if (!newEntry.ok) {
       console.log(newEntry);
       return;
@@ -82,6 +84,10 @@ export const NewEntryModal = ({
     closeNewEntryModal();
     reset();
   };
+
+  useEffect(() => {
+    setValue('date', date);
+  }, [date]);
 
   return (
     <>
@@ -100,7 +106,7 @@ export const NewEntryModal = ({
       {isNewEntryModalOpen && (
         <form
           className={clsx(
-            'fixed my-auto bg-gradient-to-br from-stone-50 to bg-green-50 left-0 right-0 mx-auto w-[80%] z-20 rounded-xl shadow-2xl flex',
+            'fixed my-auto bg-gradient-to-br from-stone-50 to bg-green-50 mx-auto w-[80%] h-auto max-h-[70%] z-20 rounded-xl shadow-2xl flex overflow-y-auto',
           )}
           onSubmit={handleSubmit(onEntrySubmit)}
         >
@@ -109,7 +115,7 @@ export const NewEntryModal = ({
               <p className="font-medium text-secondary md:text-lg text-center">
                 Tus comidas
               </p>
-              <div className="flex flex-col gap-4 h-[400px] border-b overflow-y-auto py-4 px-4">
+              <div className="flex flex-col gap-4 max-h-[300px] border-b overflow-y-auto py-4 px-4">
                 {dishes.map((dish) => (
                   <button
                     key={dish.id}
@@ -145,9 +151,9 @@ export const NewEntryModal = ({
               </div>
             </section>
             <section className="space-y-2 px-4 overflow-hidden">
-              {/* <p className="font-medium text-secondary md:text-lg text-center">
+              <p className="font-medium text-secondary md:text-lg text-center">
                 Información del registro
-              </p> */}
+              </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label
@@ -194,20 +200,16 @@ export const NewEntryModal = ({
 
             <section className="flex justify-center gap-4">
               <button
-                className={clsx(
-                  !isDirty || !isValid ? 'btn-disabled' : 'btn-danger',
-                )}
+                className={clsx(!isValid ? 'btn-disabled' : 'btn-danger')}
                 onClick={handleCancel}
-                disabled={!isDirty || !isValid}
+                disabled={!isValid}
               >
                 Cancelar
               </button>
               <button
-                className={clsx(
-                  !isDirty || !isValid ? 'btn-disabled' : 'btn-primary',
-                )}
+                className={clsx(!isValid ? 'btn-disabled' : 'btn-primary')}
                 type="submit"
-                disabled={!isDirty || !isValid}
+                disabled={!isValid}
               >
                 Confirmar
               </button>

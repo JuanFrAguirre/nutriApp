@@ -1,6 +1,8 @@
+import { Entry_Dish } from '@prisma/client';
 import NO_IMAGE from '../public/No_Image_Available.jpg';
 import NUTRI_APP_IMAGE from '../public/nutriApp/SCR-20240811-o1q.png';
 import {
+  CalendarEntryWithAllData,
   DishProduct,
   DishProductWithProducts,
   DishWithProducts,
@@ -42,6 +44,29 @@ export const renderSelectedNutritionalValueFromProduct = (
   );
 };
 
+export const renderSelectedNutritionalValueFromCalendarEntries = (
+  value: 'calories' | 'proteins' | 'carbohydrates' | 'fats',
+  entries: CalendarEntryWithAllData[],
+) =>
+  customRound(
+    entries.reduce(
+      (acc, curr) =>
+        acc +
+        curr.Entry_Dish.reduce(
+          (acc, curr) =>
+            acc +
+            curr.Dish.Dish_Product.reduce(
+              (acc, curr) =>
+                acc + curr.product[value] * curr.portionWeight * 0.01,
+              0,
+            ),
+          0,
+        ),
+      0,
+    ),
+    value === 'calories',
+  );
+
 export const customRound = (value: number | string, round: boolean = false) => {
   if (isNaN(Number(value))) return value;
   if (round) return Math.round(Number(value));
@@ -58,3 +83,7 @@ export const isSameDay = (date1: Date, date2: Date) => {
     date1.getDate() === date2.getDate()
   );
 };
+
+export const dateToString = (date: Date) => date.toISOString().split('T')[0];
+
+export const stringToDate = (string: string) => new Date(string);

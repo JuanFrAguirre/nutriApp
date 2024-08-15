@@ -26,48 +26,20 @@ export const getCalendarEntries = async () => {
   }
 };
 
-export const createCalendarEntry = async () => {
-  const session = await auth();
-  const userEmail = session?.user?.email!;
-
-  try {
-    const entry = await prisma.calendarEntry.create({
-      data: { date: new Date('2024-08-19'), userEmail },
-    });
-
-    await prisma.entry_Dish.create({
-      data: {
-        dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
-        userEmail,
-        quantity: 1,
-        calendarEntryId: entry.id,
-      },
-    });
-
-    return { ok: true, message: 'Entry created successfully' };
-  } catch (error) {
-    console.error({ error });
-    return { ok: false, message: 'Error creating Calendar Entry', error };
-  }
-};
-// export const createCalendarEntry = async (
-//   dishId: string,
-//   date: string,
-//   quantity: number,
-// ) => {
+// export const createCalendarEntry = async () => {
 //   const session = await auth();
 //   const userEmail = session?.user?.email!;
 
 //   try {
 //     const entry = await prisma.calendarEntry.create({
-//       data: { date: new Date(date), userEmail },
+//       data: { date: new Date('2024-08-19'), userEmail },
 //     });
 
 //     await prisma.entry_Dish.create({
 //       data: {
-//         dishId,
+//         dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
 //         userEmail,
-//         quantity: quantity,
+//         quantity: 1,
 //         calendarEntryId: entry.id,
 //       },
 //     });
@@ -78,3 +50,43 @@ export const createCalendarEntry = async () => {
 //     return { ok: false, message: 'Error creating Calendar Entry', error };
 //   }
 // };
+export const createCalendarEntry = async (
+  dishId: string,
+  date: string,
+  quantity: number,
+) => {
+  const session = await auth();
+  const userEmail = session?.user?.email!;
+
+  try {
+    const entry = await prisma.calendarEntry.create({
+      data: { date: new Date(date), userEmail },
+    });
+
+    await prisma.entry_Dish.create({
+      data: {
+        dishId,
+        userEmail,
+        quantity: quantity,
+        calendarEntryId: entry.id,
+      },
+    });
+
+    return { ok: true, message: 'Entry created successfully', entry };
+  } catch (error) {
+    console.error({ error });
+    return { ok: false, message: 'Error creating Calendar Entry', error };
+  }
+};
+
+export const deleteCalendarEntry = async (id: string) => {
+  try {
+    await prisma.entry_Dish.deleteMany({ where: { calendarEntryId: id } });
+    await prisma.calendarEntry.delete({ where: { id } });
+
+    return { ok: true, message: 'Entry deleted successfully' };
+  } catch (error) {
+    console.error({ error });
+    return { ok: false, message: 'Error deleting Calendar Entry', error };
+  }
+};
