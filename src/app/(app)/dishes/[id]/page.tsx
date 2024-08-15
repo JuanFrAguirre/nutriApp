@@ -4,7 +4,7 @@ import {
   customRound,
   DEFAULT_IMAGE,
   renderSelectedNutritionalValueFromDish,
-  renderSelectedNutritionalValueFromProduct,
+  renderSelectedNutritionalValueFromProductDish,
 } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -48,28 +48,28 @@ export default async function DishByIdPage({ params }: Props) {
           <div>
             <div className="flex justify-between items-center">
               <p>Calorías totales </p>
-              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
               <p className="text-secondary font-medium">
                 {renderSelectedNutritionalValueFromDish('calories', dish)}kcal
               </p>
             </div>
             <div className="flex justify-between items-center">
               <p>Proteínas totales </p>
-              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
               <p className="text-secondary font-medium">
                 {renderSelectedNutritionalValueFromDish('proteins', dish)}g
               </p>
             </div>
             <div className="flex justify-between items-center">
               <p>Carbohidratos totales </p>
-              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
               <p className="text-secondary font-medium">
                 {renderSelectedNutritionalValueFromDish('carbohydrates', dish)}g
               </p>
             </div>
             <div className="flex justify-between items-center">
               <p>Grasas totales </p>
-              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+              <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
               <p className="text-secondary font-medium">
                 {renderSelectedNutritionalValueFromDish('fats', dish)}g
               </p>
@@ -107,45 +107,52 @@ export default async function DishByIdPage({ params }: Props) {
 
                 <div className="max-w-[60%]">
                   <div className="flex justify-between items-center">
-                    <p>Calorías </p>
-                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+                    <p>Cantidad / Peso</p>
+                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
                     <p className="text-secondary font-medium">
-                      {renderSelectedNutritionalValueFromProduct(
+                      {customRound(dishProduct.portionWeight)}g
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p>Calorías</p>
+                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
+                    <p className="text-secondary font-medium">
+                      {renderSelectedNutritionalValueFromProductDish(
                         'calories',
-                        dishProduct.product,
+                        dishProduct,
                       )}
                       kcal
                     </p>
                   </div>
                   <div className="flex justify-between items-center">
-                    <p>Proteínas </p>
-                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+                    <p>Proteínas</p>
+                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
                     <p className="text-secondary font-medium">
-                      {renderSelectedNutritionalValueFromProduct(
+                      {renderSelectedNutritionalValueFromProductDish(
                         'proteins',
-                        dishProduct.product,
+                        dishProduct,
                       )}
                       g
                     </p>
                   </div>
                   <div className="flex justify-between items-center">
                     <p>Carbohidratos </p>
-                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
                     <p className="text-secondary font-medium">
-                      {renderSelectedNutritionalValueFromProduct(
+                      {renderSelectedNutritionalValueFromProductDish(
                         'carbohydrates',
-                        dishProduct.product,
+                        dishProduct,
                       )}
                       g
                     </p>
                   </div>
                   <div className="flex justify-between items-center">
                     <p>Grasas </p>
-                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-10 self-stretch" />
+                    <span className="border-b mx-2 mb-1.5 border-stone-200 grow min-w-2 self-stretch" />
                     <p className="text-secondary font-medium">
-                      {renderSelectedNutritionalValueFromProduct(
+                      {renderSelectedNutritionalValueFromProductDish(
                         'fats',
-                        dishProduct.product,
+                        dishProduct,
                       )}
                       g
                     </p>

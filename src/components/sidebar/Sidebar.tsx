@@ -129,7 +129,7 @@ export const Sidebar = () => {
       {/* Sidemenu */}
       <nav
         className={clsx(
-          'fixed max-md:py-5 right-0 bottom-0 max-md:bottom-2 max-md:right-2 max-md:w-auto md:w-[500px] max-md:h-auto h-screen bg-gradient-to-b from-white max-md:to-green-100  md:via-white md:to-black/20 z-20 shadow-2xl transform transition-all duration-300 max-md:rounded-xl overflow-y-auto',
+          'fixed max-md:py-5 md:pb-5 right-0 md:top-0 max-md:bottom-2 max-md:right-2 max-md:w-auto md:w-[500px] h-auto bg-gradient-to-br from-white to-green-100 z-20 shadow-2xl transform transition-all duration-300 max-md:rounded-xl overflow-y-auto rounded-bl-xl',
           {
             'translate-x-full max-md:translate-x-[100vw] -right-10 max-md:translate-y-[25%] ':
               !isSideMenuOpen,
@@ -148,7 +148,7 @@ export const Sidebar = () => {
                 key={link.text}
                 href={link.href || ''}
                 className={clsx(
-                  'py-3 px-5 flex gap-4 hover:text-white hover:bg-gradient-to-r from-secondary to-primary transition-all duration-500 transform',
+                  'py-3 px-5 flex gap-4 hover:text-white hover:bg-gradient-to-r from-secondary to-primary',
                   pathname === link.href &&
                     'text-white bg-gradient-to-r from-secondary to-primary',
                 )}

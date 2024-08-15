@@ -6,7 +6,7 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 200, 245, 180;
+  --background-end-rgb: 120, 175, 120;
 }
 
 body {

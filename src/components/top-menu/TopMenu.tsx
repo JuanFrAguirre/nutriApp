@@ -33,7 +33,7 @@ export const TopMenu = () => {
   return (
     <div className="z-20">
       {/* Desktop (from 768px) */}
-      <section className="max-md:hidden fixed top-0 left-0 right-0 h-20 bg-secondary">
+      <section className="max-md:hidden fixed top-0 left-0 right-0 max-xl:h-20 xl:h-24 bg-secondary">
         <div className="flex items-center justify-between max-w-7xl mx-auto h-full max-2xl:p-4">
           <Link href={'/'} className="flex gap-4 items-center group">
             <Image
@@ -58,7 +58,7 @@ export const TopMenu = () => {
             {!!products.length && (
               <Link
                 href={'/calculator'}
-                className="p-2 relative group hover:scale-[1.1] transform transition-all"
+                className="p-2 relative group hover:scale-[1.2] transform transition-all"
               >
                 <IoCalculatorOutline size={30} className="" />
                 <p className="absolute top-0 right-0 bg-red-500 text-xs w-5 h-5 rounded-full grid place-items-center">
@@ -67,7 +67,7 @@ export const TopMenu = () => {
               </Link>
             )}
             <button
-              className="flex items-center justify-center p-2 hover:scale-[1.1] transform transition-all"
+              className="flex items-center justify-center p-2 hover:scale-[1.2] transform transition-all"
               onClick={toggleMenu}
             >
               <IoMenuOutline size={40} />
@@ -78,7 +78,11 @@ export const TopMenu = () => {
           <nav className="max-lg:hidden flex items-center text-white gap-4">
             <Link
               href={'/products'}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
+                pathname === '/products' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
             >
               <span className="max-xl:hidden">Productos</span>
               <IoCartOutline size={30} className="xl:hidden" />
@@ -89,7 +93,11 @@ export const TopMenu = () => {
 
             <Link
               href={'/products/new'}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 relative"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 relative border-transparent',
+                pathname === '/products/new' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
             >
               <span className="max-xl:hidden">Agregar producto</span>
               <IoCartOutline size={30} className="xl:hidden" />
@@ -104,7 +112,11 @@ export const TopMenu = () => {
 
             <Link
               href={'/dishes'}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
+                pathname === '/dishes' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
             >
               <span className="max-xl:hidden">Comidas</span>
               <IoRestaurantOutline size={30} className="xl:hidden" />
@@ -115,7 +127,11 @@ export const TopMenu = () => {
 
             <Link
               href={'/calculator'}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 relative"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 relative border-transparent',
+                pathname === '/calculator' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
             >
               <span className="max-xl:hidden">Calculadora</span>
               <IoCalculatorOutline size={30} className="xl:hidden" />
@@ -131,7 +147,11 @@ export const TopMenu = () => {
 
             <Link
               href={'/calendar'}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
+                pathname === '/calendar' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
             >
               <span className="max-xl:hidden">Registros</span>
               <IoCalendarOutline size={30} className="xl:hidden" />
@@ -142,7 +162,11 @@ export const TopMenu = () => {
 
             <Link
               href={'/profile'}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
+                pathname === '/profile' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
             >
               <span className="max-xl:hidden">Perfil</span>
               <IoPersonOutline size={30} className="xl:hidden" />
@@ -153,7 +177,9 @@ export const TopMenu = () => {
 
             <button
               onClick={() => logout()}
-              className="flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2"
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2',
+              )}
             >
               <span className="max-xl:hidden">Cerrar Sesión</span>
               <IoLogOutOutline size={30} className="xl:hidden" />
@@ -166,7 +192,7 @@ export const TopMenu = () => {
       {/* Mobile and tablet (up to 768px) */}
       <button
         onClick={toggleMenu}
-        className="fixed flex items-center justify-center p-2 rounded-full shadow shadow-green-700/75 bottom-10 md:hidden right-5 btn-primary z-90 fade-in transition-all border border-green-600"
+        className="fixed flex items-center justify-center p-2 rounded-full shadow shadow-green-700/75 bottom-10 md:hidden right-[18px] btn-primary z-90 fade-in transition-all border border-green-600"
       >
         <IoMenuOutline size={30} />
       </button>

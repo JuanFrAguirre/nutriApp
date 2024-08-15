@@ -14,7 +14,7 @@ export default async function AppLayoutLayout({
   return (
     <>
       <TopMenu />
-      <div className="md:mt-20">{children}</div>
+      <div className="md:mt-20 xl:mt-24">{children}</div>
       <Sidebar />
       <Confirmation />
     </>

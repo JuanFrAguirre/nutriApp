@@ -15,7 +15,7 @@ export const Dish = ({ dish, className }: Props) => {
     <article
       className={clsx(
         className,
-        'border bg-white/50 border-stone-50 shadow rounded-xl flex flex-col relative max-h-[360px] sm:max-h-[500px] md:max-h-[600px]',
+        'border bg-white/75 border-stone-50 shadow rounded-xl flex flex-col relative ',
       )}
       id={dish.id}
     >
@@ -26,11 +26,13 @@ export const Dish = ({ dish, className }: Props) => {
 
       {/* Dish card */}
       <div className="max-sm:py-2 py-3">
-        <p className="sm:text-lg text-secondary line-clamp-2 mx-2 mr-6 break-words h-12 sm:h-14">
+        <p className="sm:text-lg text-secondary line-clamp-2 mx-2 mr-6 break-words ">
+          {/* h-12 sm:h-14 */}
           {dish.title}
         </p>
       </div>
-      <div className="auto-rows-min grid grid-cols-2 sm:grid-cols-3 gap-2 place-items-center overflow-y-auto grow px-3 border-t border-stone-200 py-2 sm:py-3">
+      <div className="auto-rows-min grid grid-cols-2 sm:grid-cols-3 gap-2 place-items-center overflow-y-auto grow px-3 border-t border-stone-200 pt-2 sm:pt-3  mb-2 sm:mb-3">
+        {/* h-[200px] sm:-[250px] */}
         {dish.Dish_Product.map((dishProduct) => (
           <Image
             className="border-stone-100 rounded-xl border shadow"
@@ -42,37 +44,6 @@ export const Dish = ({ dish, className }: Props) => {
           />
         ))}
       </div>
-
-      {/* <div className="px-4 grid sm:grid-cols-2 sm:justify-items-center gap-0 sm:gap-2 border-t border-stone-200 py-2 sm:py-2 text-center">
-        <p className="max-sm:flex justify-between">
-          Calorías <br />
-          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
-          <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValueFromDish('calories', dish)}kcal
-          </span>
-        </p>
-        <p className="max-sm:flex justify-between">
-          Proteínas <br />
-          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
-          <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValueFromDish('proteins', dish)}g
-          </span>
-        </p>
-        <p className="max-sm:flex justify-between">
-          Carbos <br />
-          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
-          <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValueFromDish('carbohydrates', dish)}g
-          </span>
-        </p>
-        <p className="max-sm:flex justify-between">
-          Grasas <br />
-          <span className="sm:hidden grow h-px bg-stone-200/75 self-end mx-1 mb-1.5"></span>
-          <span className="text-secondary line-clamp-1">
-            {renderSelectedNutritionalValueFromDish('fats', dish)}g
-          </span>
-        </p>
-      </div> */}
     </article>
   );
 };

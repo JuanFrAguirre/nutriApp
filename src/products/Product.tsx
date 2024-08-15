@@ -84,7 +84,7 @@ export const Product = ({
       key={calcProduct.id}
       className={clsx(
         className,
-        'p-3 border rounded-xl flex flex-col gap-2 bg-white/50 shadow relative transition-all',
+        'p-3 border rounded-xl flex flex-col gap-2 bg-white/75 shadow relative transition-all',
         isProductInCalculator && !isOnCalculatorPage
           ? 'border-primary !bg-secondary/15'
           : 'border-stone-50',
@@ -121,7 +121,7 @@ export const Product = ({
           >
             <HiPencilSquare
               size={30}
-              className="text-white bg-brandOrange hover:bg-orange-500 p-1.5 transition-all shadow"
+              className="text-white bg-brandOrange hover:bg-yellow-400 p-1.5 transition-all shadow"
             />
           </button>
         </>
@@ -130,7 +130,8 @@ export const Product = ({
       {/* Delete product from calculator on calculator page */}
       {isOnCalculatorPage && (
         <button
-          className="absolute -top-2 -right-3 rounded-full overflow-hidden"
+          // className="absolute -top-2.5 -right-2 rounded-full overflow-hidden"
+          className="absolute -top-px -right-px rounded-tr-xl rounded-bl-xl overflow-hidden"
           onClick={() => removeProductFromCalculator(product)}
         >
           <LiaTrashAlt
@@ -194,10 +195,17 @@ export const Product = ({
                   });
                 }}
               >
-                <option value="0.2">1/5 unidad</option>
-                <option value="0.25">1/4 unidad</option>
-                <option value="0.33">1/3 unidad</option>
-                <option value="0.5">1/2 unidad</option>
+                <option value="0.16">1/6 de unidad (16%)</option>
+                <option value="0.2">1/5 de unidad (20%)</option>
+                <option value="0.25">1/4 de unidad (25%)</option>
+                <option value="0.33">1/3 de unidad (33%)</option>
+                <option value="0.4">2/5 de unidad (40%)</option>
+                <option value="0.5">1/2 de unidad (50%)</option>
+                <option value="0.6">3/5 de unidad (60%)</option>
+                <option value="0.66">2/3 de unidad (66%)</option>
+                <option value="0.75">3/4 de unidad (75%)</option>
+                <option value="0.8">4/5 de unidad (80%)</option>
+                <option value="0.83">5/6 de unidad (83%)</option>
                 <option value="1">1 unidad</option>
                 <option value="2">2 unidades</option>
                 <option value="3">3 unidades</option>

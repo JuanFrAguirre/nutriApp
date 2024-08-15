@@ -19,6 +19,10 @@ export interface DishProduct extends Product {
   portionWeight?: number;
 }
 
+export type DishProductWithProducts = Prisma.Dish_ProductGetPayload<{
+  include: { product: true };
+}>;
+
 export type DishWithProducts = Prisma.DishGetPayload<{
   include: { Dish_Product: { include: { product: true } } };
 }>;
