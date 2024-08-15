@@ -87,7 +87,7 @@ export const NewEntryModal = ({
 
   useEffect(() => {
     setValue('date', date);
-  }, [date]);
+  }, [date, setValue]);
 
   return (
     <>
@@ -106,7 +106,7 @@ export const NewEntryModal = ({
       {isNewEntryModalOpen && (
         <form
           className={clsx(
-            'fixed my-auto bg-gradient-to-br from-stone-50 to bg-green-50 mx-auto w-[80%] h-auto max-h-[70%] z-20 rounded-xl shadow-2xl flex overflow-y-auto',
+            'fixed my-auto bg-gradient-to-br from-stone-50 to bg-green-50 mx-auto w-[80%] h-auto max-h-[80%] z-20 rounded-xl shadow-2xl flex overflow-y-auto',
           )}
           onSubmit={handleSubmit(onEntrySubmit)}
         >
