@@ -1,15 +1,7 @@
 'use client';
-import { deleteDishById } from '@/actions';
-import { deleteCalendarEntry } from '@/actions/calendar-entries-actions/calendar-entries-actions';
-import {
-  CalendarEntryWithAllData,
-  DishProduct,
-  DishProductDB,
-  DishProductWithProducts,
-  DishWithProducts,
-} from '@/interfaces/interfaces';
+import { deleteEntryDish } from '@/actions/calendar-entries-actions/calendar-entries-actions';
 import { useConfirmationStore } from '@/store/confirmation-store';
-import { Dish_Product, Product } from '@prisma/client';
+import { Entry_Dish } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,7 +9,7 @@ import { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 
 interface Props {
-  dish: DishWithProducts;
+  dish: Entry_Dish;
   entry: string;
 }
 
@@ -46,7 +38,7 @@ export const EntryButtons = ({ dish, entry }: Props) => {
     });
 
     if (confirmed) {
-      await deleteCalendarEntry(entry);
+      await deleteEntryDish(dish.id);
       router.refresh();
     } else {
       openConfirmation('Ha ocurrido un error', () => {});

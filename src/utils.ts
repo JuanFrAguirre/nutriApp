@@ -1,4 +1,3 @@
-import { Entry_Dish } from '@prisma/client';
 import NO_IMAGE from '../public/No_Image_Available.jpg';
 import NUTRI_APP_IMAGE from '../public/nutriApp/SCR-20240811-o1q.png';
 import {
@@ -46,20 +45,19 @@ export const renderSelectedNutritionalValueFromProduct = (
 
 export const renderSelectedNutritionalValueFromCalendarEntries = (
   value: 'calories' | 'proteins' | 'carbohydrates' | 'fats',
-  entries: CalendarEntryWithAllData[],
+  entry: CalendarEntryWithAllData,
 ) =>
   customRound(
-    entries.reduce(
-      (acc, curr) =>
+    entry.Entry_Dish.reduce(
+      (acc, curr, i) =>
         acc +
-        curr.Entry_Dish.reduce(
+        curr.Dish.Dish_Product.reduce(
           (acc, curr) =>
             acc +
-            curr.Dish.Dish_Product.reduce(
-              (acc, curr) =>
-                acc + curr.product[value] * curr.portionWeight * 0.01,
-              0,
-            ),
+            curr.product[value] *
+              curr.portionWeight *
+              0.01 *
+              entry.Entry_Dish[i].quantity,
           0,
         ),
       0,

@@ -26,30 +26,44 @@ export const getCalendarEntries = async () => {
   }
 };
 
-// export const createCalendarEntry = async () => {
-//   const session = await auth();
-//   const userEmail = session?.user?.email!;
+export const createCalendarEntryFromProduct = async (
+  productId: string,
+  date: string,
+  quantity: number,
+) => {
+  const session = await auth();
 
-//   try {
-//     const entry = await prisma.calendarEntry.create({
-//       data: { date: new Date('2024-08-19'), userEmail },
-//     });
+  try {
+    let product = await prisma.product.findFirst({ where: { id: productId } });
+    if (!product) throw new Error('product not found');
+    let dish = await prisma.dish.create({
+      data: {
+        title: product.title!,
+        userEmail: session?.user?.email!,
+        isProduct: true,
+      },
+    });
+    let dishProduct = await prisma.dish_Product.create({
+      data: {
+        productId,
+        userEmail: session?.user?.email!,
+        unitType: 'relative',
+        portionWeight: product?.presentationSize!,
+        dishId: dish.id,
+      },
+    });
 
-//     await prisma.entry_Dish.create({
-//       data: {
-//         dishId: '1797f8d0-e64a-4a6e-bef8-b996a534c507',
-//         userEmail,
-//         quantity: 1,
-//         calendarEntryId: entry.id,
-//       },
-//     });
+    await createCalendarEntry(dish.id, date, quantity);
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      message: 'Failed to create Calendar Entry with a product selected',
+      error,
+    };
+  }
+};
 
-//     return { ok: true, message: 'Entry created successfully' };
-//   } catch (error) {
-//     console.error({ error });
-//     return { ok: false, message: 'Error creating Calendar Entry', error };
-//   }
-// };
 export const createCalendarEntry = async (
   dishId: string,
   date: string,
@@ -59,20 +73,47 @@ export const createCalendarEntry = async (
   const userEmail = session?.user?.email!;
 
   try {
-    const entry = await prisma.calendarEntry.create({
-      data: { date: new Date(date), userEmail },
+    let entry = await prisma.calendarEntry.findFirst({
+      where: { date: new Date(date) },
     });
+    let entryId = '';
 
-    await prisma.entry_Dish.create({
+    if (!entry) {
+      const newEntry = await prisma.calendarEntry.create({
+        data: { date: new Date(date), userEmail },
+      });
+
+      entryId = newEntry.id;
+    } else {
+      entryId = entry.id;
+    }
+
+    let entryDish = await prisma.entry_Dish.findFirst({ where: { dishId } });
+
+    if (!entryDish) {
+      await prisma.entry_Dish.create({
+        data: {
+          dishId,
+          userEmail,
+          quantity: Number(quantity),
+          calendarEntryId: entryId,
+        },
+      });
+
+      return { ok: true, message: 'EntryDish created successfully', entry };
+    }
+
+    let { id, quantity: existingQuantity } = entryDish;
+
+    await prisma.entry_Dish.update({
       data: {
-        dishId,
-        userEmail,
-        quantity: quantity,
-        calendarEntryId: entry.id,
+        ...entryDish,
+        quantity: Number(existingQuantity) + Number(quantity),
       },
+      where: { id },
     });
 
-    return { ok: true, message: 'Entry created successfully', entry };
+    return { ok: true, message: 'EntryDish updated successfully' };
   } catch (error) {
     console.error({ error });
     return { ok: false, message: 'Error creating Calendar Entry', error };
@@ -88,5 +129,45 @@ export const deleteCalendarEntry = async (id: string) => {
   } catch (error) {
     console.error({ error });
     return { ok: false, message: 'Error deleting Calendar Entry', error };
+  }
+};
+
+export const deleteEntryDish = async (id: string) => {
+  try {
+    let entryDish = await prisma.entry_Dish.findFirst({ where: { id } });
+    if (!entryDish) {
+      return {
+        ok: false,
+        message: 'No EntryDish with that ID found',
+      };
+    }
+
+    await prisma.entry_Dish.delete({ where: { id } });
+
+    return { ok: true, message: 'EntryDish deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: 'Error deleting EntryDish' };
+  }
+};
+
+export const modifyEntryDishQuantity = async (id: string, quantity: number) => {
+  try {
+    let entryDish = await prisma.entry_Dish.findFirst({ where: { id } });
+    if (!entryDish)
+      return {
+        ok: false,
+        message: 'No EntryDish with that ID found',
+      };
+    await prisma.entry_Dish.update({
+      where: { id },
+      data: { quantity: { increment: quantity } },
+    });
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      message: `Error modifying EntryDish's quantity`,
+    };
   }
 };

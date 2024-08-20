@@ -9,7 +9,7 @@ export const getDishes = async () => {
   try {
     const dishes = await prisma.dish.findMany({
       include: { Dish_Product: { include: { product: true } } },
-      where: { userEmail: session?.user?.email! },
+      where: { userEmail: session?.user?.email!, isProduct: false },
     });
     return dishes;
   } catch (error) {
