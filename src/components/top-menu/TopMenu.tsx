@@ -33,9 +33,9 @@ export const TopMenu = () => {
   return (
     <div className="z-20">
       {/* Desktop (from 768px) */}
-      <section className="max-md:hidden fixed top-0 left-0 right-0 max-xl:h-20 xl:h-24 bg-secondary">
-        <div className="flex items-center justify-between max-w-7xl mx-auto h-full max-2xl:p-4">
-          <Link href={'/'} className="flex gap-4 items-center group">
+      <section className="fixed top-0 left-0 right-0 max-md:hidden max-xl:h-20 xl:h-24 bg-secondary">
+        <div className="flex items-center justify-between h-full mx-auto max-w-7xl max-2xl:p-4">
+          <Link href={'/'} className="flex items-center gap-4 group">
             <Image
               height={100}
               width={100}
@@ -54,14 +54,14 @@ export const TopMenu = () => {
           </Link>
 
           {/* Desktop up to 1024px */}
-          <nav className="flex gap-5 items-center text-white lg:hidden">
+          <nav className="flex items-center gap-5 text-white lg:hidden">
             {!!products.length && (
               <Link
                 href={'/calculator'}
                 className="p-2 relative group hover:scale-[1.2] transform transition-all"
               >
                 <IoCalculatorOutline size={30} className="" />
-                <p className="absolute top-0 right-0 bg-red-500 text-xs w-5 h-5 rounded-full grid place-items-center">
+                <p className="absolute top-0 right-0 grid w-5 h-5 text-xs bg-red-500 rounded-full place-items-center">
                   {products.length}
                 </p>
               </Link>
@@ -75,7 +75,37 @@ export const TopMenu = () => {
           </nav>
 
           {/* Desktop from 1024px + */}
-          <nav className="max-lg:hidden flex items-center text-white gap-4">
+          <nav className="flex items-center gap-4 text-white max-lg:hidden">
+            <Link
+              href={'/calendar'}
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
+                pathname === '/calendar' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
+            >
+              <span className="max-xl:hidden">Registros</span>
+              <IoCalendarOutline size={30} className="xl:hidden" />
+              <IoCalendarOutline size={30} className="max-xl:hidden" />
+            </Link>
+
+            {/*  */}
+
+            <Link
+              href={'/dishes'}
+              className={clsx(
+                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
+                pathname === '/dishes' &&
+                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
+              )}
+            >
+              <span className="max-xl:hidden">Comidas</span>
+              <IoRestaurantOutline size={30} className="xl:hidden" />
+              <IoRestaurantOutline size={30} className="max-xl:hidden" />
+            </Link>
+
+            {/*  */}
+
             <Link
               href={'/products'}
               className={clsx(
@@ -111,21 +141,6 @@ export const TopMenu = () => {
             {/*  */}
 
             <Link
-              href={'/dishes'}
-              className={clsx(
-                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
-                pathname === '/dishes' &&
-                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
-              )}
-            >
-              <span className="max-xl:hidden">Comidas</span>
-              <IoRestaurantOutline size={30} className="xl:hidden" />
-              <IoRestaurantOutline size={30} className="max-xl:hidden" />
-            </Link>
-
-            {/*  */}
-
-            <Link
               href={'/calculator'}
               className={clsx(
                 'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 relative border-transparent',
@@ -137,25 +152,10 @@ export const TopMenu = () => {
               <IoCalculatorOutline size={30} className="xl:hidden" />
               <IoCalculatorOutline size={30} className="max-xl:hidden" />
               {!!products.length && (
-                <p className="absolute top-0 right-0 xl:right-7 bg-red-500 rounded-full w-5 h-5 grid place-items-center text-sm">
+                <p className="absolute top-0 right-0 grid w-5 h-5 text-sm bg-red-500 rounded-full xl:right-7 place-items-center">
                   {products.length}
                 </p>
               )}
-            </Link>
-
-            {/*  */}
-
-            <Link
-              href={'/calendar'}
-              className={clsx(
-                'flex xl:flex-col-reverse hover:scale-[1.1] transform transition-all xl:gap-0.5 items-center gap-2  p-2 border-transparent',
-                pathname === '/calendar' &&
-                  'scale-[1.1] max-xl:border-2 rounded-full border-white',
-              )}
-            >
-              <span className="max-xl:hidden">Registros</span>
-              <IoCalendarOutline size={30} className="xl:hidden" />
-              <IoCalendarOutline size={30} className="max-xl:hidden" />
             </Link>
 
             {/*  */}

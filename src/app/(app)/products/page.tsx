@@ -2,6 +2,7 @@ import { getProducts } from '@/actions';
 import { DishProduct } from '@/interfaces/interfaces';
 import { Product } from '@/products';
 import { MasonryProducts } from '@/products/MasonryProducts';
+import Link from 'next/link';
 
 export default async function ProductsPage() {
   const products = await getProducts();
@@ -79,101 +80,107 @@ export default async function ProductsPage() {
   };
 
   return (
-    <main className="flex grow justify-center items-center flex-col gap-10 mb-32 mt-10 max-w-7xl mx-auto">
+    <main className="flex flex-col items-center justify-center gap-10 mx-auto mt-10 mb-32 grow max-w-7xl">
       <h1 className="text-3xl font-semibold text-secondary">Productos</h1>
-      {/* <MasonryProducts products={products} /> */}
-      {/* <div
-        className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 max-w-7xl max-sm:px-2 px-4 gap-4 grow w-full`}
-      >
-        {products.map((product) => (
-          <Product product={product} key={product.id} />
-        ))}
-      </div> */}
-      {/* SM */}
-      <div className="grid grid-cols-2 sm:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {twoCols().first.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {twoCols().second.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
+      {!!products.length ? (
+        <>
+          {/* SM */}
+          <div className="grid items-start w-full grid-cols-2 gap-4 px-2 sm:hidden">
+            <div className="grid items-start gap-4">
+              {twoCols().first.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {twoCols().second.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
 
-      {/* MD */}
-      <div className="grid grid-cols-3 max-sm:hidden md:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {threeCols().first.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {threeCols().second.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {threeCols().third.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
+          {/* MD */}
+          <div className="grid items-start w-full grid-cols-3 gap-4 px-2 max-sm:hidden md:hidden">
+            <div className="grid items-start gap-4">
+              {threeCols().first.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {threeCols().second.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {threeCols().third.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
 
-      {/* LG */}
-      <div className="grid grid-cols-4 max-md:hidden xl:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {fourCols().first.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fourCols().second.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fourCols().third.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fourCols().fourth.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
+          {/* LG */}
+          <div className="grid items-start w-full grid-cols-4 gap-4 px-2 max-md:hidden xl:hidden">
+            <div className="grid items-start gap-4">
+              {fourCols().first.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fourCols().second.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fourCols().third.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fourCols().fourth.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
 
-      {/* XL */}
-      <div className="grid grid-cols-5 max-xl:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {fiveCols().first.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
+          {/* XL */}
+          <div className="grid items-start w-full grid-cols-5 gap-4 px-2 max-xl:hidden">
+            <div className="grid items-start gap-4">
+              {fiveCols().first.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fiveCols().second.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fiveCols().third.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fiveCols().fourth.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fiveCols().fifth.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-10 p-4 grow">
+          <p className="text-lg font-light text-center">
+            Aún no hay comidas agregadas. Crea alguna para comenzar a trackear
+            tu día a día.
+          </p>
+          <Link href={'/products/new'} className="btn">
+            Crear una comida
+          </Link>
         </div>
-        <div className="grid gap-4 items-start">
-          {fiveCols().second.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fiveCols().third.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fiveCols().fourth.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fiveCols().fifth.map((product) => (
-            <Product key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
+      )}
     </main>
   );
 }

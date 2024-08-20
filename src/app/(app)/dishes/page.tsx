@@ -63,13 +63,7 @@ export default async function DishesPage() {
   };
 
   return (
-    <main className="flex grow justify-center items-center flex-col gap-10 mb-32 mt-10 max-w-7xl mx-auto relative">
-      {/* <Link
-        className="absolute top-0 right-0 btn-primary p-2"
-        href={'/products'}
-      >
-        <IoAddCircleOutline size={35} />
-      </Link> */}
+    <main className="relative flex flex-col items-center justify-center gap-10 mx-auto mt-10 mb-32 grow max-w-7xl">
       <Link
         href={'/products'}
         className="fixed flex items-center justify-center p-2 rounded-full shadow shadow-green-700/75 bottom-24 md:hidden right-[18px] btn-primary z-90 fade-in transition-all border border-green-600"
@@ -83,69 +77,77 @@ export default async function DishesPage() {
       <h1 className="text-3xl font-semibold text-secondary">
         Tus comidas guardadas
       </h1>
-      {/* OLD */}
-      {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 justify-between max-w-7xl max-sm:px-2 px-4 w-full">
-        {dishes.map((dish) => (
-          <Dish key={dish.id} dish={dish} className="" />
-          ))}
-          </div> */}
 
-      {/* SM */}
-      <div className="grid grid-cols-2 sm:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {twoCols().first.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {twoCols().second.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-      </div>
+      {!!dishes.length ? (
+        <>
+          {/* SM */}
+          <div className="grid items-start w-full grid-cols-2 gap-4 px-2 sm:hidden">
+            <div className="grid items-start gap-4">
+              {twoCols().first.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {twoCols().second.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+          </div>
 
-      {/* MD */}
-      <div className="grid grid-cols-3 max-sm:hidden md:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {threeCols().first.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {threeCols().second.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {threeCols().third.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-      </div>
+          {/* MD */}
+          <div className="grid items-start w-full grid-cols-3 gap-4 px-2 max-sm:hidden md:hidden">
+            <div className="grid items-start gap-4">
+              {threeCols().first.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {threeCols().second.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {threeCols().third.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+          </div>
 
-      {/* LG */}
-      <div className="grid grid-cols-4 max-md:hidden px-2 w-full gap-4 items-start">
-        <div className="grid gap-4 items-start">
-          {fourCols().first.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
+          {/* LG */}
+          <div className="grid items-start w-full grid-cols-4 gap-4 px-2 max-md:hidden">
+            <div className="grid items-start gap-4">
+              {fourCols().first.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fourCols().second.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fourCols().third.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+            <div className="grid items-start gap-4">
+              {fourCols().fourth.map((dish) => (
+                <Dish key={dish.id} dish={dish} />
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-10 p-4 grow">
+          <p className="text-lg font-light text-center">
+            Aún no hay comidas agregadas. Crea alguna para comenzar a trackear
+            tu día a día.
+          </p>
+          <Link href={'/products'} className="btn">
+            Crear una comida
+          </Link>
         </div>
-        <div className="grid gap-4 items-start">
-          {fourCols().second.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fourCols().third.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-        <div className="grid gap-4 items-start">
-          {fourCols().fourth.map((dish) => (
-            <Dish key={dish.id} dish={dish} />
-          ))}
-        </div>
-      </div>
+      )}
 
       <div className="grow"></div>
     </main>

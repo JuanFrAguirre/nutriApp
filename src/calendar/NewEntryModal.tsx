@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { CgSpinnerAlt } from 'react-icons/cg';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { createCalendarEntryFromProduct } from '../actions/calendar-entries-actions/calendar-entries-actions';
+import Link from 'next/link';
 
 interface Props {
   isNewEntryModalOpen: boolean;
@@ -133,13 +134,13 @@ export const NewEntryModal = ({
       {isNewEntryModalOpen && (
         <form
           className={clsx(
-            'fixed my-auto bg-gradient-to-br from-stone-50 to bg-green-50 mx-auto w-[80%] h-auto max-h-[80%] z-20 rounded-xl shadow-2xl flex overflow-y-auto',
+            'fixed my-auto bg-gradient-to-br from-stone-50 to bg-green-50 mx-auto w-[80%] max-w-6xl h-auto max-h-[80%] z-20 rounded-xl shadow-2xl flex overflow-y-auto',
           )}
           onSubmit={handleSubmit(onEntrySubmit)}
         >
-          <div className="grow py-4 space-y-4">
+          <div className="py-4 space-y-4 grow">
             <section className="space-y-2">
-              <div className="flex gap-5 items-center justify-center">
+              <div className="flex items-center justify-center gap-5">
                 <button
                   className={clsx(
                     'transform transition',
@@ -166,39 +167,54 @@ export const NewEntryModal = ({
                 </button>
               </div>
               <div className="flex flex-col gap-4 h-[300px] border-y overflow-y-auto py-4 px-4">
-                {selectedTab === 'dishes' &&
-                  dishes.map((dish) => (
-                    <button
-                      key={dish.id}
-                      className={clsx(
-                        'grid grid-cols-12 gap-2 border-2 p-2 rounded-xl items-center relative',
-                        selectedDish.id === dish.id && 'border-secondary',
-                      )}
-                      type="button"
-                      onClick={() => setSelectedDish(dish)}
-                    >
-                      {selectedDish.id === dish.id ? (
-                        <div className="absolute -top-3 -right-2.5 bg-secondary rounded-full text-white">
-                          <IoCheckmarkOutline size={25} className="p-1" />
-                        </div>
-                      ) : null}
-                      <p className="font-medium text-left col-span-4">
-                        {dish.title}
-                      </p>
-                      <div className="grid grid-cols-3 gap-0.5 border-l pl-2 col-span-8">
-                        {dish.Dish_Product.map((product) => (
-                          <Image
-                            className="border rounded-md"
-                            width={100}
-                            height={100}
-                            alt={product.product.title}
-                            src={product.product.image || DEFAULT_IMAGE}
-                            key={product.id}
-                          />
-                        ))}
+                {selectedTab === 'dishes' && (
+                  <>
+                    {!!dishes.length ? (
+                      dishes.map((dish) => (
+                        <button
+                          key={dish.id}
+                          className={clsx(
+                            'grid grid-cols-12 gap-2 border-2 p-2 rounded-xl items-center relative',
+                            selectedDish.id === dish.id && 'border-secondary',
+                          )}
+                          type="button"
+                          onClick={() => setSelectedDish(dish)}
+                        >
+                          {selectedDish.id === dish.id ? (
+                            <div className="absolute -top-3 -right-2.5 bg-secondary rounded-full text-white">
+                              <IoCheckmarkOutline size={25} className="p-1" />
+                            </div>
+                          ) : null}
+                          <p className="col-span-4 font-medium text-left">
+                            {dish.title}
+                          </p>
+                          <div className="grid grid-cols-3 gap-0.5 border-l pl-2 col-span-8">
+                            {dish.Dish_Product.map((product) => (
+                              <Image
+                                className="border rounded-md"
+                                width={100}
+                                height={100}
+                                alt={product.product.title}
+                                src={product.product.image || DEFAULT_IMAGE}
+                                key={product.id}
+                              />
+                            ))}
+                          </div>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="flex flex-col items-center justify-center gap-10 grow">
+                        <p className="font-light">
+                          Aún no tienes comidas agregadas. Crea alguna para
+                          poder seleccionarlas aquí.
+                        </p>
+                        <Link href={'/products'} className="btn">
+                          Crear una comida
+                        </Link>
                       </div>
-                    </button>
-                  ))}
+                    )}
+                  </>
+                )}
                 {selectedTab === 'products' && (
                   <>
                     {loading ? (
@@ -226,7 +242,7 @@ export const NewEntryModal = ({
                             {product.title}
                           </p>
                           <Image
-                            className="rounded-xl border"
+                            className="border rounded-xl"
                             height={50}
                             width={50}
                             alt={product.title}
@@ -241,14 +257,14 @@ export const NewEntryModal = ({
                 )}
               </div>
             </section>
-            <section className="space-y-2 px-4 overflow-hidden">
-              <p className="font-medium text-sm md:text-lg text-center">
+            <section className="px-4 space-y-2 overflow-hidden">
+              <p className="text-sm font-medium text-center md:text-lg">
                 Información del registro
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label
-                    className="font-medium text-secondary md:text-lg text-center"
+                    className="font-medium text-center text-secondary md:text-lg"
                     htmlFor="quantity"
                   >
                     Cantidad
@@ -272,7 +288,7 @@ export const NewEntryModal = ({
 
                 <div className="flex flex-col gap-2">
                   <label
-                    className="font-medium text-secondary md:text-lg text-center"
+                    className="font-medium text-center text-secondary md:text-lg"
                     htmlFor="date"
                   >
                     Fecha
@@ -290,17 +306,23 @@ export const NewEntryModal = ({
             </section>
 
             <section className="flex justify-center gap-4">
-              <button
-                className={clsx(!isValid ? 'btn-disabled' : 'btn-danger')}
-                onClick={handleCancel}
-                disabled={!isValid}
-              >
+              <button className={'btn-danger'} onClick={handleCancel}>
                 Cancelar
               </button>
               <button
-                className={clsx(!isValid ? 'btn-disabled' : 'btn-primary')}
+                className={clsx(
+                  isValid &&
+                    ((selectedTab === 'dishes' && !!dishes.length) ||
+                      (selectedTab === 'products' && !!products?.length))
+                    ? 'btn-primary'
+                    : 'btn-disabled',
+                )}
                 type="submit"
-                disabled={!isValid}
+                disabled={
+                  !isValid ||
+                  (selectedTab === 'dishes' && !dishes.length) ||
+                  (selectedTab === 'products' && !products?.length)
+                }
               >
                 Confirmar
               </button>
