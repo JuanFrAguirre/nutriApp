@@ -2,6 +2,7 @@
 import { logout } from '@/actions';
 import { useSidemenuStore } from '@/store';
 import { useCalculatorStore } from '@/store/calculator-store';
+import { useLoadingStore } from '@/store/global-loading-store';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -19,7 +20,7 @@ import {
 
 export const Sidebar = () => {
   const { isSideMenuOpen, closeSideMenu: closeMenu } = useSidemenuStore();
-  const { products } = useCalculatorStore();
+  const { setIsLoading } = useLoadingStore();
 
   const { data: session } = useSession();
   const isAuthenticated = !!session?.user;
@@ -27,8 +28,10 @@ export const Sidebar = () => {
   const pathname = usePathname();
 
   const handleLogout = useCallback(async () => {
+    setIsLoading(true);
     await logout();
     closeMenu();
+    setIsLoading(false);
     window.location.replace('/');
   }, [closeMenu]);
 
@@ -123,7 +126,7 @@ export const Sidebar = () => {
         )}
       >
         {!isAuthenticated ? null : (
-          <h2 className="text-2xl p-2 max-md:mb-3 md:mb-px md:h-20 md:flex items-center justify-center font-semibold text-primary text-center ">
+          <h2 className="items-center justify-center p-2 text-2xl font-semibold text-center max-md:mb-3 md:mb-px md:h-20 md:flex text-primary ">
             Hola, {session?.user?.name?.split(' ')[0]}!
           </h2>
         )}

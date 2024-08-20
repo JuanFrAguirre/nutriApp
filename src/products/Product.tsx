@@ -1,22 +1,16 @@
 'use client';
 import { DishProduct } from '@/interfaces/interfaces';
 import { useCalculatorStore } from '@/store/calculator-store';
+import { renderSelectedNutritionalValueFromProduct } from '@/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { CgSpinner } from 'react-icons/cg';
+import { useEffect, useMemo, useState } from 'react';
 import { HiPencilSquare } from 'react-icons/hi2';
+import { ImSpinner2 } from 'react-icons/im';
 import { IoAddOutline, IoCheckmarkOutline } from 'react-icons/io5';
 import { LiaTrashAlt } from 'react-icons/lia';
 import NO_IMAGE from '../../public/No_Image_Available.jpg';
-import { renderSelectedNutritionalValueFromProduct } from '@/utils';
 
 interface Props {
   product: DishProduct;
@@ -74,7 +68,7 @@ export const Product = ({
   if (loading)
     return (
       <div className="w-full grow flex justify-center items-center min-h-[227px] bg-white border animate-pulse rounded">
-        <CgSpinner className="animate-spin text-primary" size={40} />
+        <ImSpinner2 className="animate-spin text-primary" size={40} />
       </div>
     );
 
@@ -105,12 +99,12 @@ export const Product = ({
             {isProductInCalculator ? (
               <IoCheckmarkOutline
                 size={30}
-                className="text-white bg-primary hover:bg-secondary p-1 transition-all shadow"
+                className="p-1 text-white transition-all shadow bg-primary hover:bg-secondary"
               />
             ) : (
               <IoAddOutline
                 size={30}
-                className="text-white bg-primary hover:bg-secondary p-1 transition-all shadow"
+                className="p-1 text-white transition-all shadow bg-primary hover:bg-secondary"
               />
             )}
           </button>
@@ -131,17 +125,17 @@ export const Product = ({
       {isOnCalculatorPage && (
         <button
           // className="absolute -top-2.5 -right-2 rounded-full overflow-hidden"
-          className="absolute -top-px -right-px rounded-tr-xl rounded-bl-xl overflow-hidden"
+          className="absolute overflow-hidden -top-px -right-px rounded-tr-xl rounded-bl-xl"
           onClick={() => removeProductFromCalculator(product)}
         >
           <LiaTrashAlt
             size={35}
-            className="text-white bg-red-500 hover:bg-red-700 p-1 transition-all shadow"
+            className="p-1 text-white transition-all bg-red-500 shadow hover:bg-red-700"
           />
         </button>
       )}
 
-      <p className="grow text-secondary text-left pr-4">{product.title}</p>
+      <p className="pr-4 text-left grow text-secondary">{product.title}</p>
 
       <Image
         src={calcProduct.image || NO_IMAGE}
@@ -236,7 +230,7 @@ export const Product = ({
             </div>
           )}
 
-          <div className="space-y-1 flex flex-col items-stretch w-full">
+          <div className="flex flex-col items-stretch w-full space-y-1">
             <small className="text-secondary">
               Valor nutricional x {portionWeight}g
             </small>

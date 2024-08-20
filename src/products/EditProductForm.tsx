@@ -3,12 +3,12 @@
 import { editProduct } from '@/actions';
 import { DishProduct } from '@/interfaces/interfaces';
 import clsx from 'clsx';
-import _ from 'lodash';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CgSpinner } from 'react-icons/cg';
+import { ImSpinner2 } from 'react-icons/im';
 import { ALLOWED_IMAGE_SOURCES } from './CreateProductForm';
+import { useLoadingStore } from '@/store/global-loading-store';
 
 interface Props {
   product: DishProduct;
@@ -36,6 +36,7 @@ export const EditProductForm = ({ product }: Props) => {
   });
 
   const [loading, setLoading] = useState(true);
+  const { setIsLoading } = useLoadingStore();
   const router = useRouter();
 
   const handleSubmitEditProduct = useCallback(
@@ -50,7 +51,7 @@ export const EditProductForm = ({ product }: Props) => {
         carbohydrates,
         fats,
       } = data;
-
+      setIsLoading(true);
       await editProduct({
         ...product,
         title,
@@ -62,6 +63,7 @@ export const EditProductForm = ({ product }: Props) => {
         carbohydrates: Number(carbohydrates),
         fats: Number(fats),
       });
+      setIsLoading(false);
       window.location.reload();
     },
     [product],
@@ -74,14 +76,14 @@ export const EditProductForm = ({ product }: Props) => {
   if (loading)
     return (
       <>
-        <CgSpinner className="text-primary animate-spin" size={50} />
+        <ImSpinner2 className="text-primary animate-spin" size={50} />
         <div className="grow"></div>
       </>
     );
 
   return (
     <form
-      className="flex flex-col gap-10 w-full px-4 grow max-w-7xl mx-auto"
+      className="flex flex-col w-full gap-10 px-4 mx-auto grow max-w-7xl"
       onSubmit={handleSubmit(handleSubmitEditProduct)}
     >
       <div className="flex flex-col gap-2">
@@ -206,7 +208,7 @@ export const EditProductForm = ({ product }: Props) => {
       </div>
 
       <div className="grow"></div>
-      <div className="grid grid-cols-2 items-center gap-4">
+      <div className="grid items-center grid-cols-2 gap-4">
         <button
           className={clsx(!isDirty || !isValid ? 'btn-disabled' : 'btn-danger')}
           type="button"

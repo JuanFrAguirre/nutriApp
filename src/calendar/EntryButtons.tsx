@@ -1,6 +1,7 @@
 'use client';
 import { deleteEntryDish } from '@/actions/calendar-entries-actions/calendar-entries-actions';
 import { useConfirmationStore } from '@/store/confirmation-store';
+import { useLoadingStore } from '@/store/global-loading-store';
 import { Entry_Dish } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -17,6 +18,7 @@ export const EntryButtons = ({ dish, entry }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const { openConfirmation } = useConfirmationStore();
+  const { setIsLoading } = useLoadingStore();
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -38,11 +40,13 @@ export const EntryButtons = ({ dish, entry }: Props) => {
     });
 
     if (confirmed) {
+      setIsLoading(true);
       await deleteEntryDish(dish.id);
       router.refresh();
     } else {
       openConfirmation('Ha ocurrido un error', () => {});
     }
+    setIsLoading(false);
   };
 
   return (
@@ -81,12 +85,12 @@ export const EntryButtons = ({ dish, entry }: Props) => {
       >
         <Link
           href={`/dishes/${dish.id}`}
-          className="p-1 px-3 block hover:text-primary origin-center transition-all rounded"
+          className="block p-1 px-3 transition-all origin-center rounded hover:text-primary"
         >
           <p>Ver más</p>
         </Link>
         <button
-          className="p-1 px-3 block hover:text-primary origin-center transition-all rounded text-left"
+          className="block p-1 px-3 text-left transition-all origin-center rounded hover:text-primary"
           onClick={handleDelete}
         >
           <p>Eliminar</p>

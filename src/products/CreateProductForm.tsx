@@ -1,10 +1,10 @@
 'use client';
 
 import { postProduct } from '@/actions';
-import { redirect } from 'next/navigation';
+import { useLoadingStore } from '@/store/global-loading-store';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CgSpinner } from 'react-icons/cg';
+import { ImSpinner2 } from 'react-icons/im';
 
 export const ALLOWED_IMAGE_SOURCES = [
   'prod-mercadona.imgix.net',
@@ -42,6 +42,7 @@ export const CreateProductForm = () => {
     },
   });
 
+  const { setIsLoading } = useLoadingStore();
   const [loading, setLoading] = useState(true);
 
   const handleNewProductCreation = useCallback(async (data: FormInputs) => {
@@ -55,6 +56,7 @@ export const CreateProductForm = () => {
       carbohydrates,
       fats,
     } = data;
+    setIsLoading(true);
     const newProduct = await postProduct({
       title,
       tags,
@@ -65,6 +67,7 @@ export const CreateProductForm = () => {
       carbohydrates: Number(carbohydrates),
       fats: Number(fats),
     });
+    setIsLoading(false);
     window.location.href = `/products#${newProduct?.data?.id}`;
   }, []);
   // }, []);
@@ -76,14 +79,14 @@ export const CreateProductForm = () => {
   if (loading)
     return (
       <>
-        <CgSpinner className="text-primary animate-spin" size={50} />
+        <ImSpinner2 className="text-primary animate-spin" size={50} />
         <div className="grow"></div>
       </>
     );
 
   return (
     <form
-      className="flex flex-col gap-10 w-full px-4 grow max-w-7xl mx-auto"
+      className="flex flex-col w-full gap-10 px-4 mx-auto grow max-w-7xl"
       onSubmit={handleSubmit(handleNewProductCreation)}
     >
       <div className="flex flex-col gap-2">
@@ -208,7 +211,7 @@ export const CreateProductForm = () => {
       </div>
 
       <div className="grow"></div>
-      <div className="grid grid-cols-2 items-center gap-4">
+      <div className="grid items-center grid-cols-2 gap-4">
         <button
           disabled={!isDirty}
           className={!isDirty ? 'btn-disabled' : 'btn-danger'}

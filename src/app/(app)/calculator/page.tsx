@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { CgSpinner } from 'react-icons/cg';
+import { ImSpinner2 } from 'react-icons/im';
 import { IoRestaurantOutline } from 'react-icons/io5';
 import { LiaTrashAlt } from 'react-icons/lia';
 
@@ -82,23 +82,23 @@ export default function CalculatorPage() {
 
   if (loading)
     return (
-      <div className="w-full flex justify-center items-center h-screen fade-in transition-all">
-        <CgSpinner size={50} className="animate-spin text-secondary" />
+      <div className="flex items-center justify-center w-full h-screen transition-all fade-in">
+        <ImSpinner2 size={50} className="animate-spin text-secondary" />
       </div>
     );
 
   return (
-    <main className="flex grow justify-center items-center flex-col gap-10 mb-52 md:mb-72 mt-10">
+    <main className="flex flex-col items-center justify-center gap-10 mt-10 grow mb-52 md:mb-72">
       <h1 className="text-3xl font-semibold text-secondary">Calculadora</h1>
       {products.length ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 max-w-7xl max-sm:px-2 px-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 max-w-7xl max-sm:px-2">
           {products.map((product) => (
             <Product key={product.id} product={product} isOnCalculatorPage />
           ))}
         </div>
       ) : (
-        <div className="grow p-4 flex justify-center items-center flex-col gap-10">
-          <p className="text-center font-light text-lg">
+        <div className="flex flex-col items-center justify-center gap-10 p-4 grow">
+          <p className="text-lg font-light text-center">
             Aún no hay productos. Agrega alguno para calcular y crear una
             comida.
           </p>
@@ -115,7 +115,7 @@ export default function CalculatorPage() {
           <div className="col-span-4">
             <p className="text-left">
               Calorías: <br />
-              <span className="text-secondary font-semibold">
+              <span className="font-semibold text-secondary">
                 {products.length
                   ? `${getRenderableValue('calories')}kcal`
                   : '-'}
@@ -123,7 +123,7 @@ export default function CalculatorPage() {
             </p>
             <p className="text-left">
               Proteínas: <br />
-              <span className="text-secondary font-semibold">
+              <span className="font-semibold text-secondary">
                 {products.length ? `${getRenderableValue('proteins')}g` : '-'}
               </span>
             </p>
@@ -131,7 +131,7 @@ export default function CalculatorPage() {
           <div className="col-span-3">
             <p className="text-left">
               Carbos: <br />
-              <span className="text-secondary font-semibold">
+              <span className="font-semibold text-secondary">
                 {products.length
                   ? `${getRenderableValue('carbohydrates')}g`
                   : '-'}
@@ -139,12 +139,12 @@ export default function CalculatorPage() {
             </p>
             <p className="text-left">
               Grasas: <br />
-              <span className="text-secondary font-semibold">
+              <span className="font-semibold text-secondary">
                 {products.length ? `${getRenderableValue('fats')}g` : '-'}
               </span>
             </p>
           </div>
-          <div className="flex flex-col gap-2 col-span-3 justify-self-center">
+          <div className="flex flex-col col-span-3 gap-2 justify-self-center">
             <button
               disabled={!products.length}
               onClick={handleCreateDish}
@@ -170,43 +170,43 @@ export default function CalculatorPage() {
       </div>
 
       {/* Summary desktop */}
-      <div className="max-md:hidden bg-white max-w-3xl mx-auto fixed bottom-0 w-full p-10 rounded-t-xl shadow-2xl shadow-black border border-stone-400">
+      <div className="fixed bottom-0 w-full max-w-3xl p-10 mx-auto bg-white border shadow-2xl max-md:hidden rounded-t-xl shadow-black border-stone-400">
         <div className="flex">
-          <div className="grow grid grid-cols-2 justify-items-center">
+          <div className="grid grid-cols-2 grow justify-items-center">
             <div className="flex flex-col justify-between">
-              <p className="text-left text-lg">
+              <p className="text-lg text-left">
                 Calorías: <br />
-                <span className="text-secondary font-semibold">
+                <span className="font-semibold text-secondary">
                   {products.length
                     ? `${getRenderableValue('calories')}kcal`
                     : '-'}
                 </span>
               </p>
-              <p className="text-left text-lg">
+              <p className="text-lg text-left">
                 Proteínas: <br />
-                <span className="text-secondary font-semibold">
+                <span className="font-semibold text-secondary">
                   {products.length ? `${getRenderableValue('proteins')}g` : '-'}
                 </span>
               </p>
             </div>
             <div className="flex flex-col justify-between">
-              <p className="text-left text-lg">
+              <p className="text-lg text-left">
                 Carbohidratos: <br />
-                <span className="text-secondary font-semibold">
+                <span className="font-semibold text-secondary">
                   {products.length
                     ? `${getRenderableValue('carbohydrates')}g`
                     : '-'}
                 </span>
               </p>
-              <p className="text-left text-lg">
+              <p className="text-lg text-left">
                 Grasas: <br />
-                <span className="text-secondary font-semibold">
+                <span className="font-semibold text-secondary">
                   {products.length ? `${getRenderableValue('fats')}g` : '-'}
                 </span>
               </p>
             </div>
           </div>
-          <div className="col-span-4 flex flex-col gap-5 justify-center px-4">
+          <div className="flex flex-col justify-center col-span-4 gap-5 px-4">
             <button
               disabled={!products.length}
               onClick={handleCreateDish}

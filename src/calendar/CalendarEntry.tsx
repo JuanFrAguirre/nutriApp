@@ -15,8 +15,8 @@ import { isEmpty } from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { CgSpinnerAlt } from 'react-icons/cg';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { ImSpinner2 } from 'react-icons/im';
 import {
   IoAddCircleOutline,
   IoAddOutline,
@@ -24,6 +24,7 @@ import {
 } from 'react-icons/io5';
 import { EntryButtons } from './EntryButtons';
 import { NewEntryModal } from './NewEntryModal';
+import { useLoadingStore } from '@/store/global-loading-store';
 
 interface Props {
   entries: CalendarEntryWithAllData[];
@@ -32,6 +33,7 @@ interface Props {
 const today = new Date();
 
 export const CalendarEntry = ({ entries }: Props) => {
+  const { setIsLoading } = useLoadingStore();
   const { date, setDate } = useCalendarEntryStore();
   const [selectedEntry, setSelectedEntry] = useState(
     {} as CalendarEntryWithAllData,
@@ -66,8 +68,10 @@ export const CalendarEntry = ({ entries }: Props) => {
   };
 
   const handleModifyQuantity = async (id: string, quantity: number) => {
+    setIsLoading(true);
     await modifyEntryDishQuantity(id, quantity);
     router.refresh();
+    setIsLoading(false);
   };
 
   return (
@@ -78,7 +82,7 @@ export const CalendarEntry = ({ entries }: Props) => {
       />
       <div
         className={clsx(
-          'grow bg-white/75 p-4 rounded-xl w-[90%] max-w-[400px] flex flex-col min-h-[600px] border-2 relative shadow-xl',
+          'grow bg-white/75 p-4 rounded-xl w-[90%] max-w-[400px] md:max-w-[500px] flex flex-col min-h-[600px] border-2 relative shadow-xl',
           isSameDay(stringToDate(date), today)
             ? 'border-secondary'
             : 'border-stone-200',
@@ -86,15 +90,15 @@ export const CalendarEntry = ({ entries }: Props) => {
       >
         {/* Today's indicator */}
         {isSameDay(stringToDate(date), today) && (
-          <div className="absolute -top-4 right-0 left-0 flex justify-center">
-            <span className="px-1 border-secondary rounded-md border-2 bg-secondary text-white">
+          <div className="absolute left-0 right-0 flex justify-center -top-4">
+            <span className="px-1 text-white border-2 rounded-md border-secondary bg-secondary">
               Hoy
             </span>
           </div>
         )}
 
         {/* Header */}
-        <header className="flex justify-between mb-5 pb-5 border-b border-stone-400">
+        <header className="flex justify-between pb-5 mb-5 border-b border-stone-400">
           <button onClick={() => changeDate(-1)}>
             <FaArrowLeft size={15} />
           </button>
@@ -111,14 +115,14 @@ export const CalendarEntry = ({ entries }: Props) => {
           </button>
         </header>
 
-        <main className="grow space-y-2 mb-4">
-          <p className="font-semibold text-secondary text-center">Comidas</p>
+        <main className="mb-4 space-y-2 grow">
+          <p className="font-semibold text-center text-secondary">Comidas</p>
           {loading ? (
-            <div className="grow grid place-items-center">
-              <CgSpinnerAlt size={50} className="animate-spin text-secondary" />
+            <div className="grid grow place-items-center">
+              <ImSpinner2 size={50} className="animate-spin text-secondary" />
             </div>
           ) : !isEmpty(selectedEntry.Entry_Dish) ? (
-            <div className="flex flex-col gap-4 max-h-[300px] py-2 overflow-y-auto">
+            <div className="flex flex-col gap-4 max-h-[300px] p-2 overflow-y-auto border-y">
               {selectedEntry.Entry_Dish.map((entryDish, i) => {
                 const { Dish: dish } = entryDish;
                 return (
@@ -155,8 +159,8 @@ export const CalendarEntry = ({ entries }: Props) => {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-12 gap-2 items-center">
-                        <p className="font-medium text-left col-span-4">
+                      <div className="grid items-center grid-cols-12 gap-2">
+                        <p className="col-span-4 font-medium text-left">
                           {dish.title}
                         </p>
                         <div className="grid grid-cols-3 gap-0.5 border-l pl-2 col-span-7">
@@ -185,7 +189,7 @@ export const CalendarEntry = ({ entries }: Props) => {
                     <div className="h-px bg-stone-200" />
 
                     {entryDish && (
-                      <div className="flex justify-center items-center gap-4">
+                      <div className="flex items-center justify-center gap-4">
                         <button
                           className={
                             entryDish.quantity <= 1
@@ -219,12 +223,12 @@ export const CalendarEntry = ({ entries }: Props) => {
               })}
             </div>
           ) : (
-            <div className="grow flex items-center justify-center">
+            <div className="flex items-center justify-center grow">
               <p className="text-center">Aún no hay registros para este día</p>
             </div>
           )}
           {!isEmpty(selectedEntry.Entry_Dish) && (
-            <p className="font-semibold text-secondary text-center">
+            <p className="font-semibold text-center text-secondary">
               Valores diarios
             </p>
           )}
@@ -235,7 +239,7 @@ export const CalendarEntry = ({ entries }: Props) => {
               <div className="flex justify-between">
                 <p>Calorías totales</p>
                 <span className="border-b mx-2 mb-1.5 border-stone-300 grow min-w-2 self-stretch" />
-                <p className="text-secondary font-medium">
+                <p className="font-medium text-secondary">
                   {renderSelectedNutritionalValueFromCalendarEntries(
                     'calories',
                     selectedEntry,
@@ -246,7 +250,7 @@ export const CalendarEntry = ({ entries }: Props) => {
               <div className="flex justify-between">
                 <p>Proteínas totales</p>
                 <span className="border-b mx-2 mb-1.5 border-stone-300 grow min-w-2 self-stretch" />
-                <p className="text-secondary font-medium">
+                <p className="font-medium text-secondary">
                   {renderSelectedNutritionalValueFromCalendarEntries(
                     'proteins',
                     selectedEntry,
@@ -257,7 +261,7 @@ export const CalendarEntry = ({ entries }: Props) => {
               <div className="flex justify-between">
                 <p>Carbohidratos totales</p>
                 <span className="border-b mx-2 mb-1.5 border-stone-300 grow min-w-2 self-stretch" />
-                <p className="text-secondary font-medium">
+                <p className="font-medium text-secondary">
                   {renderSelectedNutritionalValueFromCalendarEntries(
                     'carbohydrates',
                     selectedEntry,
@@ -268,7 +272,7 @@ export const CalendarEntry = ({ entries }: Props) => {
               <div className="flex justify-between">
                 <p>Grasas totales</p>
                 <span className="border-b mx-2 mb-1.5 border-stone-300 grow min-w-2 self-stretch" />
-                <p className="text-secondary font-medium">
+                <p className="font-medium text-secondary">
                   {renderSelectedNutritionalValueFromCalendarEntries(
                     'fats',
                     selectedEntry,
@@ -282,7 +286,7 @@ export const CalendarEntry = ({ entries }: Props) => {
 
         <footer className="flex justify-end">
           <button
-            className="flex items-center btn-primary gap-2"
+            className="flex items-center gap-2 btn-primary"
             onClick={handleAddEntry}
           >
             <p>Añadir registro</p>

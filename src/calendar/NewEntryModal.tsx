@@ -3,16 +3,17 @@ import { getDishes, getProducts } from '@/actions';
 import { createCalendarEntry } from '@/actions/calendar-entries-actions/calendar-entries-actions';
 import { DishProduct, DishWithProducts } from '@/interfaces/interfaces';
 import { useCalendarEntryStore } from '@/store/calendar-entry-store';
+import { useLoadingStore } from '@/store/global-loading-store';
 import { DEFAULT_IMAGE } from '@/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CgSpinnerAlt } from 'react-icons/cg';
+import { ImSpinner2 } from 'react-icons/im';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { createCalendarEntryFromProduct } from '../actions/calendar-entries-actions/calendar-entries-actions';
-import Link from 'next/link';
 
 interface Props {
   isNewEntryModalOpen: boolean;
@@ -28,6 +29,7 @@ export const NewEntryModal = ({
   isNewEntryModalOpen,
   closeNewEntryModal,
 }: Props) => {
+  const { isLoading, setIsLoading } = useLoadingStore();
   const [dishes, setDishes] = useState<DishWithProducts[]>([]);
   const [products, setProducts] = useState<DishProduct[]>();
   const { date, setDate } = useCalendarEntryStore();
@@ -61,6 +63,7 @@ export const NewEntryModal = ({
   }, []);
 
   const onEntrySubmit = async (data: FormInputs) => {
+    setIsLoading(true);
     const { date, quantity } = data;
     if (selectedTab === 'dishes') {
       let newEntry = await createCalendarEntry(
@@ -83,6 +86,7 @@ export const NewEntryModal = ({
     reset();
     setDate(date);
     router.refresh();
+    setIsLoading(false);
   };
 
   const getProductsData = async () => {
@@ -166,15 +170,15 @@ export const NewEntryModal = ({
                   <p>Productos</p>
                 </button>
               </div>
-              <div className="flex flex-col gap-4 h-[300px] border-y overflow-y-auto py-4 px-4">
-                {selectedTab === 'dishes' && (
-                  <>
-                    {!!dishes.length ? (
-                      dishes.map((dish) => (
+              {selectedTab === 'dishes' && (
+                <>
+                  {!!dishes.length ? (
+                    <div className="flex flex-col md:grid grid-cols-2 xl:grid-cols-3 gap-4 h-[300px] border-y overflow-y-auto py-4 px-4">
+                      {dishes.map((dish) => (
                         <button
                           key={dish.id}
                           className={clsx(
-                            'grid grid-cols-12 gap-2 border-2 p-2 rounded-xl items-center relative',
+                            'grid grid-cols-12 gap-2 border-2 p-2 rounded-xl items-center relative md:max-h-[175px]',
                             selectedDish.id === dish.id && 'border-secondary',
                           )}
                           type="button"
@@ -188,7 +192,7 @@ export const NewEntryModal = ({
                           <p className="col-span-4 font-medium text-left">
                             {dish.title}
                           </p>
-                          <div className="grid grid-cols-3 gap-0.5 border-l pl-2 col-span-8">
+                          <div className="grid grid-cols-3 gap-0.5 border-l pl-2 col-span-8 overflow-y-auto">
                             {dish.Dish_Product.map((product) => (
                               <Image
                                 className="border rounded-md"
@@ -201,28 +205,33 @@ export const NewEntryModal = ({
                             ))}
                           </div>
                         </button>
-                      ))
-                    ) : (
-                      <div className="flex flex-col items-center justify-center gap-10 grow">
-                        <p className="font-light">
-                          Aún no tienes comidas agregadas. Crea alguna para
-                          poder seleccionarlas aquí.
-                        </p>
-                        <Link href={'/products'} className="btn">
-                          Crear una comida
-                        </Link>
-                      </div>
-                    )}
-                  </>
-                )}
-                {selectedTab === 'products' && (
-                  <>
-                    {loading ? (
-                      <div className="flex items-center justify-center ">
-                        <CgSpinnerAlt size={50} className="text-secondary" />
-                      </div>
-                    ) : products?.length && selectedProduct ? (
-                      products?.map((product) => (
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-10 grow">
+                      <p className="font-light">
+                        Aún no tienes comidas agregadas. Crea alguna para poder
+                        seleccionarlas aquí.
+                      </p>
+                      <Link href={'/products'} className="btn">
+                        Crear una comida
+                      </Link>
+                    </div>
+                  )}
+                </>
+              )}
+              {selectedTab === 'products' && (
+                <>
+                  {loading ? (
+                    <div className="flex items-center justify-center w-full">
+                      <ImSpinner2
+                        size={50}
+                        className="text-secondary animate-spin"
+                      />
+                    </div>
+                  ) : products?.length && selectedProduct ? (
+                    <div className="flex flex-col md:grid grid-cols-2 xl:grid-cols-3 gap-4 h-[300px] border-y overflow-y-auto py-4 px-4">
+                      {products?.map((product) => (
                         <button
                           type="button"
                           onClick={() => setSelectedProduct(product)}
@@ -249,19 +258,19 @@ export const NewEntryModal = ({
                             src={product.image || DEFAULT_IMAGE}
                           />
                         </button>
-                      ))
-                    ) : (
-                      <p>No Products</p>
-                    )}
-                  </>
-                )}
-              </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>No Products</p>
+                  )}
+                </>
+              )}
             </section>
             <section className="px-4 space-y-2 overflow-hidden">
               <p className="text-sm font-medium text-center md:text-lg">
                 Información del registro
               </p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 md:max-w-[600px] md:mx-auto">
                 <div className="flex flex-col gap-2">
                   <label
                     className="font-medium text-center text-secondary md:text-lg"

@@ -2,6 +2,7 @@
 
 import { deleteProductById } from '@/actions';
 import { useConfirmationStore } from '@/store/confirmation-store';
+import { useLoadingStore } from '@/store/global-loading-store';
 import { LiaTrashAlt } from 'react-icons/lia';
 
 interface Props {
@@ -10,12 +11,15 @@ interface Props {
 
 export const DeleteProductButton = ({ id }: Props) => {
   const { openConfirmation } = useConfirmationStore();
+  const { setIsLoading } = useLoadingStore();
 
   const confirmDelete = () => {
     openConfirmation(
       'Eliminar este producto?',
       async (text) => {
+        setIsLoading(true);
         await deleteProductById(id);
+        setIsLoading(false);
         window.location.href = '/products';
       },
       false,
@@ -24,7 +28,7 @@ export const DeleteProductButton = ({ id }: Props) => {
 
   return (
     <button
-      className="btn-danger flex items-center mr-4 p-1 md:px-3 justify-center"
+      className="flex items-center justify-center p-1 mr-4 btn-danger md:px-3"
       onClick={confirmDelete}
       type="button"
     >

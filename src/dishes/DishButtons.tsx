@@ -2,6 +2,7 @@
 import { deleteDishById } from '@/actions';
 import { DishWithProducts } from '@/interfaces/interfaces';
 import { useConfirmationStore } from '@/store/confirmation-store';
+import { useLoadingStore } from '@/store/global-loading-store';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,6 +17,7 @@ export const DishButtons = ({ dish }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const { openConfirmation } = useConfirmationStore();
+  const { setIsLoading } = useLoadingStore();
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -33,13 +35,14 @@ export const DishButtons = ({ dish }: Props) => {
       toggleMenu();
       openConfirmation('Eliminar esta comida?', () => resolve(true));
     });
-
+    setIsLoading(true);
     if (confirmed) {
       await deleteDishById(dish.id);
       router.refresh();
     } else {
       openConfirmation('Ha ocurrido un error', () => {});
     }
+    setIsLoading(false);
   };
 
   return (
@@ -77,18 +80,18 @@ export const DishButtons = ({ dish }: Props) => {
         >
           <Link
             href={`/dishes/${dish.id}`}
-            className="p-1 px-3 block hover:text-primary origin-center transition-all rounded"
+            className="block p-1 px-3 transition-all origin-center rounded hover:text-primary"
           >
             <p>Ver más</p>
           </Link>
           {/* <Link
             href={`/dishes/${dish.id}/edit`}
-            className="p-1 px-3 block hover:text-primary origin-center transition-all rounded"
+            className="block p-1 px-3 transition-all origin-center rounded hover:text-primary"
           >
             <p>Editar</p>
           </Link> */}
           <button
-            className="p-1 px-3 block hover:text-primary origin-center transition-all rounded text-left"
+            className="block p-1 px-3 text-left transition-all origin-center rounded hover:text-primary"
             onClick={handleDelete}
           >
             <p>Eliminar</p>
