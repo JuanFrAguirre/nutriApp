@@ -45,31 +45,38 @@ export const CreateProductForm = () => {
   const { setIsLoading } = useLoadingStore();
   const [loading, setLoading] = useState(true);
 
-  const handleNewProductCreation = useCallback(async (data: FormInputs) => {
-    const {
-      title,
-      tags,
-      image,
-      presentationSize,
-      calories,
-      proteins,
-      carbohydrates,
-      fats,
-    } = data;
-    setIsLoading(true);
-    const newProduct = await postProduct({
-      title,
-      tags,
-      image: ALLOWED_IMAGE_SOURCES.includes(image) ? image : '',
-      presentationSize: Number(presentationSize),
-      calories: Number(calories),
-      proteins: Number(proteins),
-      carbohydrates: Number(carbohydrates),
-      fats: Number(fats),
-    });
-    setIsLoading(false);
-    window.location.href = `/products#${newProduct?.data?.id}`;
-  }, []);
+  const handleNewProductCreation = useCallback(
+    async (data: FormInputs) => {
+      const {
+        title,
+        tags,
+        image,
+        presentationSize,
+        calories,
+        proteins,
+        carbohydrates,
+        fats,
+      } = data;
+      setIsLoading(true);
+      const newProduct = await postProduct({
+        title,
+        tags,
+        image:
+          image &&
+          ALLOWED_IMAGE_SOURCES.some((source) => image.includes(source))
+            ? image
+            : '',
+        presentationSize: Number(presentationSize),
+        calories: Number(calories),
+        proteins: Number(proteins),
+        carbohydrates: Number(carbohydrates),
+        fats: Number(fats),
+      });
+      setIsLoading(false);
+      window.location.href = `/products#${newProduct?.data?.id}`;
+    },
+    [setIsLoading],
+  );
   // }, []);
 
   useEffect(() => {

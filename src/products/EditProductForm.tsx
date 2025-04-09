@@ -56,7 +56,11 @@ export const EditProductForm = ({ product }: Props) => {
         ...product,
         title,
         tags,
-        image: image && ALLOWED_IMAGE_SOURCES.includes(image) ? image : '',
+        image:
+          image &&
+          ALLOWED_IMAGE_SOURCES.some((source) => image.includes(source))
+            ? image
+            : '',
         presentationSize: Number(presentationSize),
         calories: Number(calories),
         proteins: Number(proteins),
@@ -66,7 +70,7 @@ export const EditProductForm = ({ product }: Props) => {
       setIsLoading(false);
       window.location.reload();
     },
-    [product],
+    [product, setIsLoading],
   );
 
   useEffect(() => {
